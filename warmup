@@ -1,0 +1,137 @@
+Foundations with Linux and Cloud
+
+A beginner-friendly guide to building strong fundamentals in Linux, servers, and cloud computing. These are the essential skills needed to start a DevOps journey.
+
+---
+
+Overview
+
+DevOps relies heavily on systems running in production environments. To work effectively in DevOps, you need to understand how hardware and operating systems work, what servers are and how they run applications, and how Linux powers most cloud and server environments.
+
+This content explains these foundational concepts in a clear and beginner-friendly way.
+
+---
+
+Prerequisites
+
+Before diving into DevOps tools, you should be familiar with the following.
+
+Linux Basics
+Linux is the operating system most commonly used on servers and cloud platforms.
+
+Cloud Concepts
+You should understand how virtual servers work and how to access them using the command line.
+
+---
+
+Core Concepts
+
+What Is Hardware?
+
+Hardware refers to the physical components of a computer.
+
+CPU (Processor) executes instructions.
+RAM (Memory) provides temporary storage for running processes.
+Storage (HDD or SSD) is used for permanent data storage.
+The motherboard connects all components.
+Networking components enable communication between systems.
+
+These components exist in desktops, laptops, mobile devices, and servers.
+
+---
+
+What Is a Server?
+
+A server is a computer designed to run applications and services continuously.
+
+Users interact with applications, and applications interact with hardware.
+Servers provide a stable, always-on environment to serve multiple users at the same time.
+
+---
+
+What Is an Operating System?
+
+An operating system is software that manages hardware and provides an interface for users and applications.
+
+Its responsibilities include accepting commands from users and applications, communicating with hardware components, executing requested operations, and managing system resources.
+
+Without an operating system, hardware cannot function.
+
+---
+
+Linux History
+
+UNIX was developed in the 1960s and written in the C programming language.
+In 1991, Linus Torvalds released Linux, inspired by UNIX.
+Linux is free, open source, and community-driven.
+
+Today, Linux runs the majority of servers and cloud infrastructure worldwide.
+
+---
+
+What Is Open Source?
+
+Open source means the source code of software is publicly available.
+
+This allows anyone to view the code, modify it to suit their needs, and share improvements with others.
+
+Linux is one of the most successful open-source projects in history.
+
+---
+
+Windows vs Linux
+
+Windows is a paid operating system with closed source code and is mostly focused on personal computing.
+Linux is free, open source, supports multiple users, is more secure, and is widely used for servers and cloud infrastructure.
+
+Windows focuses more on graphical interfaces, while Linux is primarily command-line driven.
+
+---
+
+How to Start Practicing Linux
+
+There are multiple ways to learn Linux.
+
+You can install Linux on your PC by dual booting with Windows or replacing the existing operating system.
+You can use virtual machines such as VirtualBox, VMware, or Hyper-V.
+You can use cloud servers, which is the recommended approach.
+
+Using cloud servers closely matches real DevOps environments, involves no risk to personal systems, and allows easy creation and deletion of servers.
+
+---
+
+Using Cloud for Linux Practice
+
+Amazon Web Services provides a free tier suitable for learning.
+
+A typical free-tier setup includes one virtual CPU, one gigabyte of RAM, eight to thirty gigabytes of storage, and a Linux-based operating system.
+
+The basic steps are to create an AWS account, launch an EC2 instance, connect via SSH, and start practicing Linux commands.
+
+---
+
+Learning Path
+
+Beginner level includes basic Linux commands, file system navigation, files and directories, and users and permissions.
+
+Intermediate level includes process management, package management, shell scripting, and networking basics.
+
+Advanced level includes system administration, automation, containers, and CI/CD pipelines.
+
+---
+
+Essential Linux Commands
+
+File and directory operations include ls, cd, pwd, mkdir, rm, cp, mv, and touch.
+File viewing and editing commands include cat, less, nano, and vim.
+User and permission commands include chmod, chown, sudo, and whoami.
+Process management commands include ps, top, kill, and systemctl.
+Networking commands include ping, curl, wget, and ssh.
+Package management commands include apt, yum, and dnf.
+
+---
+
+License
+
+This content is intended for educational purposes only.
+
