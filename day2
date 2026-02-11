@@ -1,0 +1,53 @@
+Day 2 of revising and DevOps from scratch - Launching an EC2 Instance/ VM / Server
+
+Procedure To launch the EC2 instance / VM / Server.
+Login in to amazon Webservice https://aws.amazon.com
+Search for EC2 in services or open below link
+Open the Amazon EC2 console at https://console.aws.amazon.com/ec2/
+we need to click on EC2 Dashboard , instances (running)
+Choose Launch Instance.
+New page will gets opened like below, give a name to your server as shown below
+& scroll down the page for options
+  
+Step 1: Application and OS Images (Amazon Machine Image)
+( ** Leave everything as default )
+Choose an Operating system Amazon Linux AMI ( or ubuntu)
+  
+Step 2: Choose an Instance Type ( ** Leave everything as default )
+  
+Step 3: Key pair (login)
+  
+Click on create new keypair
+New window will get popped up give keypair a name & download to your computer
+Note: don’t give space while naming keypair
+  
+Step 4: Network settings ( ** Leave everything as default )
+  
+Step 5: Configure storage ( ** Leave everything as default )
+  
+In Step 6: Summary( ** Leave everything as default )
+Click on launch instance
+Click on view all instances
+Instance will be launched in 3-4 minutes…
+If you see like this you have launched an EC2 instance / server succesfull
+Procedure to connect to Servers / EC2 Instances / Virtual
+Machine created from our Laptop:
+To connect to your Ec2 instance need to select instance and click on connect
+  
+Click on instance name & select connect option
+Copy command under example as highlighted below
+  ssh -i "your-key-name.pem" user-name@instance-public-ip
+
+Go to folder where you have downloaded your key file & right click on blank space & select git bash
+here option as below
+Paste the command as copied from , paste & press enter
+Select yes & you are connected to EC2-instance….
+If your connected successfully you should see something like this
+
+1. A command prompt: The most common indicator is the appearance of a command prompt, typically in the format of user@hostname:~$ (e.g., ec2-user@ip-172-31-xx-xx:~$ for Amazon Linux). An empty prompt after running a command to check connectivity might also indicate success.
+2. A welcome message or banner: Depending on the Linux distribution and its configuration, you might see a welcome message, system information (e.g., system load, updates available), or a message of the day (MOTD). 
+  
+FYI:
+Please stop instances when your are not using the servers. 
+
+
