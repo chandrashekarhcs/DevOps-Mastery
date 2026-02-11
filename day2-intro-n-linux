@@ -1,0 +1,319 @@
+AWS EC2 and Linux – Beginner Notes (DevOps Foundation)
+
+------------------------------------------------------------------
+
+1. Understanding Servers in Cloud
+
+Different Names – Same Meaning
+
+The following terms usually mean the same thing:
+
+Server
+Virtual Machine (VM)
+EC2 Instance
+Machine
+Computer
+
+In AWS, we call it an EC2 Instance.
+
+------------------------------------------------------------------
+
+What is EC2?
+
+EC2 stands for Elastic Compute Cloud.
+
+It is a service provided by Amazon Web Services.
+
+AWS provides servers (virtual machines) on rent.
+
+You are charged only when the server is in the running state.
+
+------------------------------------------------------------------
+
+Free Tier Details
+
+EC2 Free Tier includes:
+
+750 hours per month
+1 GB RAM
+1 CPU
+8 GB storage
+
+Important:
+
+Always stop your EC2 instance when you are not practicing.
+AWS charges only when the instance is running.
+
+------------------------------------------------------------------
+
+2. Shell / Terminal
+
+After logging into your EC2 instance, you will see something like:
+
+[ec2-user@ip-172-31-13-5 ~]$
+
+This screen is called:
+
+Shell
+Terminal
+Command Line Interface (CLI)
+
+------------------------------------------------------------------
+
+Understanding the Login Prompt
+
+Example:
+
+[ec2-user@ip-172-31-13-5 ~]$
+
+Explanation:
+
+ec2-user – Username used to log in
+ip-172-31-13-5 – Private IP address of the server
+~ – Home directory
+$ – Normal user
+
+# – Root user (administrator)
+
+------------------------------------------------------------------
+
+3. Linux Basics
+
+Linux is an Operating System like Windows or macOS.
+
+In most servers, Linux does not use a Graphical User Interface (GUI).
+Instead, we use commands in the terminal.
+
+Important points:
+
+Linux is case sensitive.
+Commands must be typed exactly as required.
+Uppercase and lowercase letters are treated differently.
+
+Example:
+
+ls     – Correct
+LS     – Incorrect
+
+------------------------------------------------------------------
+
+4. File and Directory Commands in Linux
+
+Note: In Linux, folders are called directories.
+
+------------------------------------------------------------------
+
+1. touch Command
+
+Used to create a blank file.
+
+Syntax:
+
+touch <file_name>
+
+Example:
+
+touch file1
+
+------------------------------------------------------------------
+
+2. ls Command (List)
+
+Used to list files and directories in the current location.
+
+Syntax:
+
+ls
+
+Example:
+
+ls
+
+------------------------------------------------------------------
+3. mkdir Command
+
+Used to create a directory.
+
+Syntax:
+
+mkdir <directory_name>
+
+Example:
+
+mkdir directory1
+
+------------------------------------------------------------------
+
+4. pwd Command (Present Working Directory)
+
+Shows the current directory you are in.
+
+Syntax:
+
+pwd
+
+When you log in to EC2, the default directory is:
+
+/home/ec2-user/
+
+------------------------------------------------------------------
+
+5. cd Command (Change Directory)
+
+Used to move between directories.
+
+Syntax:
+
+cd <directory_name>
+
+Examples:
+
+Move into a directory:
+
+cd directory1
+
+Move one directory back:
+
+cd ..
+
+Move two directories back:
+
+cd ../..
+
+Return to home directory from anywhere:
+
+cd
+
+------------------------------------------------------------------
+
+6. rm Command (Remove)
+
+Used to delete files and directories.
+
+Delete a file:
+
+rm -f <file_name>
+
+Delete a directory:
+
+rm -rf <directory_name>
+
+Explanation:
+
+-f means force delete
+-r means recursive (required for directories)
+
+If you try:
+
+rm -f directory1
+
+You will get an error because it is a directory.
+
+Correct way:
+
+rm -rf directory1
+
+------------------------------------------------------------------
+
+7. clear Command
+
+Used to clear the terminal screen.
+
+clear
+
+------------------------------------------------------------------
+
+8. vi Editor
+
+Used to create or edit files.
+
+Syntax:
+
+vi <file_name>
+
+Example:
+
+vi my-file
+
+Basic usage:
+
+Press i to enter insert mode.
+Type your content.
+Press Esc to exit insert mode.
+
+To save and exit:
+
+:wq!
+
+To exit without saving:
+
+:q!
+
+------------------------------------------------------------------
+
+9. cat Command (Concatenate)
+
+Used to display file content.
+
+Syntax:
+
+cat <file_name>
+
+Example:
+
+cat my-file
+
+If you type only:
+
+cat
+
+Press Ctrl + C to exit.
+
+------------------------------------------------------------------
+
+10. cp Command (Copy)
+
+Used to copy content from one file to another.
+
+Syntax:
+
+cp <source_file> <destination_file>
+
+Example:
+
+cp file1 file2
+
+If the destination file does not exist, Linux will create it.
+
+------------------------------------------------------------------
+
+11. mv Command (Move / Rename)
+
+Used to rename a file.
+
+Syntax:
+
+mv <old_name> <new_name>
+
+Example:
+
+mv my-file file1
+
+------------------------------------------------------------------
+
+Practical Understanding from this notes
+
+If you practice this working session, you would have successfully performed & be able understand the following:
+
+Created files using touch
+Created directories using mkdir
+Navigated using cd
+Checked location using pwd
+Deleted files using rm -f
+Deleted directories using rm -rf
+Edited files using vi
+Viewed content using cat
+Copied files using cp
+Renamed files using mv
+
+This is the basic foundation of Linux required for DevOps
