@@ -1,0 +1,302 @@
+ADVANCED LINUX COMMANDS AND CONCEPTS
+
+vi Editor – Additional Commands
+
+Setting line numbers inside a file:
+
+Press Esc
+Type: set nu
+Press Enter
+
+This will display line numbers in the file.
+
+To go to a particular line number:
+
+Press Esc
+Type: :<line_number>
+Press Enter
+
+Example:
+
+:25
+
+This will move the cursor to line number 25.
+
+To delete a line:
+
+Press Esc
+Type: dd
+
+This deletes the current line.
+
+cd Using Full Path
+
+You can move inside nested directories using a complete path.
+
+Syntax:
+
+cd <dir1>/<dir2>/<dir3>
+
+Example:
+
+cd dir1/dir2/dir3
+
+This moves directly into dir3 without navigating step by step.
+
+Copying One Directory to Another
+
+To copy a directory along with all its files and subdirectories:
+
+Syntax:
+
+cp -r <source_directory> <target_directory>
+
+Explanation:
+
+-r means recursive.
+It copies all files and subdirectories inside the source directory.
+
+Example:
+
+cp -r dir1 dir2
+
+Wildcard Symbol *
+
+In Linux, * represents all files and directories.
+
+Example:
+
+rm -rf *
+
+This deletes all files and directories in the present working directory.
+
+Be very careful while using this command.
+
+REDIRECTION
+
+Redirect Operator >
+
+Used to write the output of a command into a file.
+
+Example:
+
+ls -lrt > myFileName
+ls > myFileName
+
+If the file already exists, it will overwrite the content.
+
+Append Operator >>
+
+Used to add output to the end of a file.
+
+Example:
+
+ls >> myFileName
+echo "hello all, welcome to devops classes" >> myFileName
+
+If the file exists, it will not overwrite.
+It will append content at the end.
+
+PIPING
+
+What is Pipe ( | )?
+
+Pipe is used to pass the output of one command as input to another command.
+
+Syntax:
+
+command1 | command2
+
+Use Case 1: Print only line 99 from numbers_file
+
+If you run:
+
+tail -2 numbers_file
+
+It prints:
+
+Line 99
+Line 100
+
+But if you want only line 99:
+
+tail -2 numbers_file | head -1
+
+Here:
+tail -2 prints last 2 lines
+head -1 prints the first line from that output
+
+Use Case 2: Display only 97th line
+
+tail -3 numbers_file | head -1
+
+Use Case 3: Display only 9th line
+
+head -10 numbers_file | tail -1
+
+GREP COMMAND
+
+grep is used to search for a pattern (keyword) inside a file.
+
+If the pattern is found, it prints the entire matching line.
+
+Syntax:
+
+grep <pattern> <fileName>
+
+Pattern, string, and keyword all mean the same.
+
+Example:
+
+grep karnataka census_data
+grep mumbai census_data
+grep chennai census_data
+
+Other grep Options
+
+Case insensitive search:
+
+grep -i <pattern> <fileName>
+
+The -i option ignores case sensitivity.
+
+Searching Multiple Patterns
+
+grep -e "pattern1" -e "pattern2" <fileName>
+
+This searches for multiple patterns in the same file.
+
+Recursive grep
+
+Search a pattern in the present directory and all subdirectories:
+
+grep -r <pattern> <directory_name>
+
+To search in all files of current directory:
+
+grep -r <pattern> *
+
+WORD COUNT COMMAND
+
+wc command is used to count:
+
+Number of lines
+Number of words
+Number of characters
+
+Syntax:
+
+wc <fileName>
+
+Count only number of lines:
+
+wc -l <fileName>
+
+Count only number of words:
+
+wc -w <fileName>
+
+Count only number of characters:
+
+wc -c <fileName>
+
+LINUX FILE SYSTEM
+
+In Windows:
+
+Operating system files are stored in C drive.
+
+In Linux:
+
+All operating system files are stored under:
+
+/
+
+This is called the ROOT directory.
+
+/ is similar to C drive in Windows.
+
+To go to root directory:
+
+cd /
+
+Important Directories in Root
+
+bin
+Contains system commands and binary files.
+Examples: mkdir, ls, cd, ps
+
+etc
+Contains configuration files.
+
+home
+Contains home directories of users.
+Examples:
+/home/ec2-user
+/home/bharath
+
+var
+Contains variable files such as logs and mail.
+Examples:
+/var/log
+/var/mail
+
+tmp
+Contains temporary files.
+
+FILE DESCRIPTION USING ls -lrt
+
+When you run:
+
+ls -lrth
+
+You see detailed information about files.
+
+Example:
+
+-rw-rw-r-- 1 ec2-user ec2-user 792 Nov 4 01:39 samplefile
+-rw-rw-r-- 1 ec2-user ec2-user 600 Nov 4 01:54 census_data
+drwxrwxr-x 2 ec2-user ec2-user 6 Nov 7 05:09 d1
+
+Understanding the First Column – Permissions Block
+
+The first character indicates file type:
+
+means regular file
+d means directory
+
+Linux Permission Codes
+
+r means read and its numeric value is 4
+w means write and its numeric value is 2
+x means execute and its numeric value is 1
+
+means no permission and value is 0
+
+Read permission:
+Allows viewing file using cat, more, or less.
+
+Write permission:
+Allows editing file using vi.
+
+Example Permission Breakdown
+
+-rw-rw-r-- 1 ec2-user ec2-user 792 Nov 4 01:39 samplefile
+
+Break it into three groups:
+
+rw- rw- r--
+
+First group: Owner permissions
+Second group: Group permissions
+Third group: Others permissions
+
+Convert to numeric form:
+
+rw- = 4 + 2 + 0 = 6
+rw- = 4 + 2 + 0 = 6
+r-- = 4 + 0 + 0 = 4
+
+So numeric permission is:
+
+664
