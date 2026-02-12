@@ -1,0 +1,306 @@
+Day3 of learning devops - linux foundations
+
+Spaces in Linux Commands
+
+In Linux, spaces are used to separate commands and arguments in the terminal.
+
+Spaces tell Linux where each file or directory name starts and ends.
+
+Example:
+
+touch file1 file2 file3
+
+Here:
+touch is the command
+file1 file2 file3 are arguments
+---------------------------------------------------------------------------------------------
+  
+Creating Multiple Empty Files
+
+You can create multiple empty files using a single command:
+
+touch file1 file2 file3
+
+This will create three files at once.
+---------------------------------------------------------------------------------------------
+  
+Creating Multiple Directories
+
+You can create multiple directories in one command:
+
+mkdir dir1 dir2 dir3
+
+This will create dir1, dir2, and dir3 in the current location.
+---------------------------------------------------------------------------------------------
+  
+ls -lrt Command
+
+The ls -lrt command is used to list files in detailed format.
+
+ls -lrt
+
+Explanation:
+
+-l → Long listing format (shows permissions, owner, size, date)
+-r → Reverse order
+-t → Sort by time
+
+Recently created or recently modified files will be displayed at the bottom of the terminal.
+---------------------------------------------------------------------------------------------
+  
+date Command
+
+The date command is used to display the current date and time.
+
+date
+
+---------------------------------------------------------------------------------------------
+
+Creating Nested Directories
+
+To create a directory inside another directory (nested structure), use:
+
+mkdir -p <directory_path>
+
+Example:
+
+mkdir -p dir1/dir2/dir3/dir4
+
+Explanation:
+
+-p means parent path.
+
+All directories in the specified path will be created automatically.
+
+First dir1 will be created.
+Inside dir1, dir2 will be created.
+Inside dir2, dir3 will be created.
+Inside dir3, dir4 will be created.
+
+The directory structure will look like this:
+
+dir1/
+dir2/
+dir3/
+dir4/
+---------------------------------------------------------------------------------------------
+
+Deleting Multiple Files and Directories
+
+To delete multiple files:
+
+rm -f file1 file2 file3
+
+To delete multiple directories:
+
+rm -rf dir1 dir2 dir3
+
+-f means force delete
+-r means recursive (required for directories)
+---------------------------------------------------------------------------------------------
+
+Creating Hidden Files and Directories
+
+To create a hidden file or directory, use a dot at the beginning of the name.
+
+Example:
+
+touch .hiddenfile
+mkdir .hiddendir
+
+Files or directories starting with a dot are hidden by default.
+---------------------------------------------------------------------------------------------
+  
+Listing Hidden Files
+
+To display hidden files:
+
+ls -a
+
+or
+
+ls -lrta
+
+-a means show all files, including hidden ones.
+---------------------------------------------------------------------------------------------
+  
+more Command
+
+The more command is used to display file content page by page.
+
+Syntax:
+
+more <file_name>
+
+Features:
+
+You can scroll down only.
+Press the spacebar to move down.
+Press q to exit.
+You cannot scroll up in more.
+---------------------------------------------------------------------------------------------
+
+less Command
+
+The less command is also used to display file content page by page.
+
+Syntax:
+
+less <file_name>
+
+Features:
+
+You can scroll up and down.
+Use arrow keys to move.
+Press q to exit.
+
+less is more powerful than more.
+---------------------------------------------------------------------------------------------
+  
+head Command
+
+The head command is used to display the top portion of a file.
+
+Syntax:
+
+head <file_name>
+
+By default, head displays the first 10 lines of a file.
+
+You can specify number of lines:
+
+head -n 20 <file_name>
+---------------------------------------------------------------------------------------------
+
+tail Command
+
+The tail command is used to display the bottom portion of a file.
+
+Syntax:
+
+tail <file_name>
+
+By default, tail shows the last 10 lines.
+
+You can specify number of lines:
+
+tail -n 20 <file_name>
+---------------------------------------------------------------------------------------------
+  
+echo Command
+
+The echo command is used to print text in the terminal.
+
+Syntax:
+
+echo "your content"
+
+Example:
+
+echo "Hello all, welcome to DevOps classes"
+---------------------------------------------------------------------------------------------
+
+Practice Content for head and tail Commands
+
+Use the following content to create a file (for example: numbersfile.txt) and practice head, tail, and pipe commands.
+
+This is line number 1
+This is line number 2
+This is line number 3
+This is line number 4
+This is line number 5
+This is line number 6
+This is line number 7
+This is line number 8
+This is line number 9
+This is line number 10
+This is line number 11
+This is line number 12
+This is line number 13
+This is line number 14
+This is line number 15
+This is line number 16
+This is line number 17
+This is line number 18
+This is line number 19
+This is line number 20
+This is line number 21
+This is line number 22
+This is line number 23
+This is line number 24
+This is line number 25
+This is line number 26
+This is line number 27
+This is line number 28
+This is line number 29
+This is line number 30
+This is line number 31
+This is line number 32
+This is line number 33
+This is line number 34
+This is line number 35
+This is line number 36
+This is line number 37
+This is line number 38
+This is line number 39
+This is line number 40
+This is line number 41
+This is line number 42
+This is line number 43
+This is line number 44
+This is line number 45
+This is line number 46
+This is line number 47
+This is line number 48
+This is line number 49
+This is line number 50
+This is line number 51
+This is line number 52
+This is line number 53
+This is line number 54
+This is line number 55
+This is line number 56
+This is line number 57
+This is line number 58
+This is line number 59
+This is line number 60
+This is line number 61
+This is line number 62
+This is line number 63
+This is line number 64
+This is line number 65
+This is line number 66
+This is line number 67
+This is line number 68
+This is line number 69
+This is line number 70
+This is line number 71
+This is line number 72
+This is line number 73
+This is line number 74
+This is line number 75
+This is line number 76
+This is line number 77
+This is line number 78
+This is line number 79
+This is line number 80
+This is line number 81
+This is line number 82
+This is line number 83
+This is line number 84
+This is line number 85
+This is line number 86
+This is line number 87
+This is line number 88
+This is line number 89
+This is line number 90
+This is line number 91
+This is line number 92
+This is line number 93
+This is line number 94
+This is line number 95
+This is line number 96
+This is line number 97
+This is line number 98
+This is line number 99
+This is line number 100
