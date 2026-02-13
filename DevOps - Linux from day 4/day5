@@ -1,0 +1,386 @@
+DAY 5 NOTES, Devops - linux Links, System Resources, and User Administration
+
+---
+
+1. LINK FILES IN LINUX
+
+---
+
+A link file is a reference to another file in the Linux file system.
+It works like a shortcut that points to the original file.
+
+There are two types of links in Linux:
+
+1. Soft Link (Symbolic Link)
+2. Hard Link
+
+---
+
+2. SOFT LINK (SYMBOLIC LINK)
+
+---
+
+A soft link is similar to a Windows shortcut.
+It points to the original file path.
+
+Syntax:
+
+ln -s <original_file_or_directory> <link_name>
+
+Example:
+
+ln -s samplefile softlinkfile
+
+Key Points:
+
+* It is just a pointer to the original file.
+* If the original file is deleted, the soft link becomes broken.
+* Soft links can be created for both files and directories.
+* The inode numbers of the original file and soft link are different.
+* Editing the original file updates the soft link automatically.
+
+---
+
+3. HARD LINK
+
+---
+
+A hard link is another reference to the same file data.
+It directly points to the same inode.
+
+Syntax:
+
+ln <original_file_name> <hard_link_name>
+
+Example:
+
+ln samplefile hardlinkfile
+
+Key Points:
+
+* If the original file is deleted, the hard link still works.
+* Hard links can only be created for files, not directories.
+* The inode number of original and hard link files is the same.
+* Editing one file updates the other automatically.
+* File size remains the same for both.
+
+---
+
+4. INODE NUMBER
+
+---
+
+Every file and directory in Linux has a unique inode number.
+
+It stores metadata such as:
+
+Permissions
+Owner
+File size
+Disk location
+
+To check inode number:
+
+ls -li <file_or_directory_name>
+
+The first column shows the inode number.
+
+---
+
+5. AUTOCOMPLETION
+
+---
+
+Use the Tab key for autocompletion.
+
+Type the first few characters of a file or directory name, then press Tab.
+
+Example:
+
+cat c + Tab
+
+If census_data exists, it will auto-complete.
+
+---
+
+6. COMPUTE RESOURCES
+
+---
+
+Compute resources mean hardware resources such as:
+
+RAM
+HDD (Storage)
+CPU
+
+In AWS EC2 Free Tier:
+
+RAM: 1 GB
+Storage: 8 GB
+CPU: 1 Core
+
+---
+
+7. CHECK CURRENT USER
+
+---
+
+Command:
+
+whoami
+
+Displays the username currently logged in.
+
+---
+
+8. CHECK SYSTEM MEMORY (RAM)
+
+---
+
+Command:
+
+free -m
+
+Displays memory usage in MB.
+
+---
+
+9. CHECK DISK SPACE
+
+---
+
+Command:
+
+df -kh .
+
+Displays disk usage in human-readable format.
+
+---
+
+10. CHECK NUMBER OF CPUs
+
+---
+
+Command:
+
+nproc
+
+Displays number of CPU cores available.
+
+---
+
+11. USER ADMINISTRATION OVERVIEW
+
+---
+
+There are two types of users in Linux:
+
+1. Root User
+2. Normal User
+
+---
+
+12. ROOT USER
+
+---
+
+Root is the administrator of the system.
+
+Details:
+
+Username: root
+User ID (UID): 0
+Home Directory: /root
+
+Root user can:
+
+Install or uninstall software
+Add or delete users
+Modify system configurations
+Change file permissions
+Restart or shut down the server
+Access all files
+
+---
+
+13. NORMAL USERS
+
+---
+
+Normal users:
+
+Can create, edit, or delete files only in their home directory.
+Example: /home/ec2-user
+
+Cannot:
+
+Install system software
+Modify system files
+Create new users
+Change system configurations
+
+---
+
+14. SWITCH TO ROOT USER
+
+---
+
+Command:
+
+sudo su -
+
+---
+
+15. CREATE A NEW USER
+
+---
+
+Switch to root first.
+
+Command:
+
+useradd <username>
+
+Example:
+
+useradd viratkohli
+
+---
+
+16. VERIFY USER CREATION
+
+---
+
+Method 1:
+
+cd /home
+ls -lrt
+
+Method 2:
+
+cat /etc/passwd | tail -1
+
+---
+
+17. NOTES ON USER CREATION
+
+---
+
+When a new user is created:
+
+A new group with the same name is automatically created.
+A home directory is automatically created under /home.
+
+---
+
+18. SWITCH BETWEEN USERS
+
+---
+
+Command:
+
+su - <username>
+
+Example:
+
+su - viratkohli
+
+---
+
+19. SET PASSWORD FOR USER
+
+---
+
+Command:
+
+passwd <username>
+
+Example:
+
+passwd viratkohli
+
+Password will not be visible while typing.
+
+---
+
+20. SUDO USERS
+
+---
+
+Sudo stands for super user do.
+
+Users with sudo permissions can execute commands as root without logging in as root.
+
+For security reasons, not all users should have root access.
+
+---
+
+21. ADD USER TO SUDO GROUP
+
+---
+
+Step 1: Login as root
+
+sudo su -
+
+Step 2: Edit sudoers file
+
+vi /etc/sudoers
+
+Add:
+
+<username> ALL=(ALL) NOPASSWD: ALL
+
+Example:
+
+devops_user ALL=(ALL) NOPASSWD: ALL
+
+Save using:
+
+:wq!
+
+If file is read-only:
+
+chmod 640 /etc/sudoers
+
+Step 3: Restart SSH service
+
+service sshd restart
+
+Verify using:
+
+sudo <command>
+
+---
+
+22. DELETE A USER
+
+---
+
+Command:
+
+userdel <username>
+
+---
+
+23. CREATE A GROUP MANUALLY
+
+---
+
+Command:
+
+groupadd <groupname>
+
+---
+
+24. ASSIGNMENT
+
+---
+
+1. Command to check size of a file
+   Use: ls -lh or du -h <filename>
+
+2. Create multiple users
+   Add them to sudo group
+   Verify sudo privileges
+
