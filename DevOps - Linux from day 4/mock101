@@ -1,0 +1,183 @@
+MOCK SESSION PRACTICE
+Creating a User, Adding to Sudoers, and Configuring SSH for User Login
+-------------------------------------------------------------------------------------
+
+OBJECTIVE
+
+To create a new user in Linux, grant sudo privileges, configure SSH for password authentication, and verify successful SSH login using the new user.
+-------------------------------------------------------------------------------------
+STEP 1: Switch to Root User
+
+First, switch to the root user because only the root user can create users and modify sudo permissions.
+
+Command:
+
+sudo su -
+
+Example:
+
+[ec2-user@ip-1 home]$ sudo su -
+[root@ip-1 home]#
+-------------------------------------------------------------------------------------
+STEP 2: Create a New User
+
+Use the useradd command to create a new user.
+
+Command:
+
+useradd <username>
+
+Example:
+
+[root@ip-1 home]# useradd user201
+
+Verify user creation:
+
+[root@ip-1 home]# ls /home
+ec2-user user101 user201
+
+This confirms that the user user201 has been created successfully.
+-------------------------------------------------------------------------------------
+STEP 3: Set Password for the User
+
+Set a password for the newly created user using the passwd command.
+
+Command:
+
+passwd <username>
+
+Example:
+
+[root@ip-1 home]# passwd user201
+Changing password for user user201.
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully.
+-------------------------------------------------------------------------------------
+STEP 4: Add User to Sudoers List
+
+Open the sudoers file using vi editor.
+
+Command:
+
+vi /etc/sudoers
+
+Add the following line at the end of the file:
+
+<username> ALL=(ALL) NOPASSWD: ALL
+
+Example:
+
+user201 ALL=(ALL) NOPASSWD: ALL
+
+Meaning:
+
+user201 → username
+ALL → allowed from all systems
+(ALL) → can run commands as any user
+NOPASSWD → no password required
+ALL → can execute all commands
+
+Save and exit:
+
+Press Esc
+Type: :wq!
+Press Enter
+
+If the file is read-only, run:
+
+chmod 640 /etc/sudoers
+-------------------------------------------------------------------------------------
+STEP 5: Restart SSH Service
+
+Restart the SSH service to apply changes.
+
+Command:
+
+service sshd restart
+
+Output:
+
+Redirecting to /bin/systemctl restart sshd.service
+-------------------------------------------------------------------------------------
+STEP 6: Enable Password Authentication in SSH Configuration
+
+Open SSH configuration file:
+
+Command:
+
+vi /etc/ssh/sshd_config
+
+Find the line:
+
+PasswordAuthentication no
+
+Change it to:
+
+PasswordAuthentication yes
+
+Save and exit:
+
+:wq!
+
+Restart SSH service again:
+
+service sshd restart
+-------------------------------------------------------------------------------------
+STEP 7: Connect Using SSH from Local System
+
+Go to AWS Console and copy the Public IP Address of the EC2 instance.
+
+Open a new terminal on your local system.
+
+Command:
+
+ssh <username>@<public_ip_address>
+
+Example:
+
+ssh user201@54.xxx.xxx.xxx
+
+Enter password when prompted:
+
+user201@54.xxx.xxx.xxx
+'s password:
+-------------------------------------------------------------------------------------
+STEP 8: Verify Successful Login
+
+After entering the password, you will see:
+
+[user201@ip-172-31-x-x ~]$
+
+This confirms successful SSH login.
+
+RESULT: 
+   ,     #_
+   ~\_  ####_        Amazon Linux 2023
+  ~~  \_#####\
+  ~~     \###|
+  ~~       \#/ ___   https://aws.amazon.com/linux/amazon-linux-2023
+   ~~       V~' '->
+    ~~~         /
+      ~~._.   _/
+         _/ _/
+       _/m/'
+[user201@ip ~]$
+-------------------------------------------------------------------------------------
+CONCLUSION
+-------------------------------------------------------------------------------------
+
+1. Created using useradd
+2. Assigned password using passwd
+3. Added to sudoers file
+4. Configured for SSH password authentication
+5. Logged in successfully using SSH
+
+This process demonstrates how to:
+
+1. Create a Linux user
+2. Grant administrative privileges using sudoers
+3. Configure SSH for password-based login
+4. Verify remote login using SSH
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
