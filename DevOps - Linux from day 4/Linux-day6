@@ -1,0 +1,415 @@
+Linux Fundamentals
+
+1. Absolute Path vs Relative Path
+
+Absolute Path
+
+* Absolute path is the complete path to a file or directory.
+* It always starts from the root directory `/`.
+* Every file and directory in Linux originates from `/`.
+
+Example:
+
+```
+/home/ec2-user/d1/d2/d3/census_data_linkfile
+```
+
+This path is valid from anywhere in the system.
+
+---
+
+Relative Path
+
+* Relative path is the path **relative to your current working directory (pwd).
+* It does NOT start with `/`.
+
+Example:
+
+If current directory is:
+
+```
+/home/ec2-user
+```
+
+Then relative path:
+
+```
+d1/d2/d3/census_data_linkfile
+```
+
+---
+
+Key Difference
+
+| Absolute Path       | Relative Path               |
+| ------------------- | --------------------------- |
+| Starts with `/`     | Does NOT start with `/`     |
+| Full path from root | Path from current directory |
+| Works from anywhere | Depends on current location |
+
+---
+
+2. Manual Pages and Help Commands
+
+man command (Manual Pages)
+
+Used to view detailed documentation of a command.
+
+Syntax:
+
+```
+man <command>
+```
+
+Example:
+
+```
+man ls
+```
+
+This shows:
+
+* Description
+* Options
+* Usage
+
+---
+
+"--help option"
+
+Shows quick help and options for a command.
+
+Syntax:
+
+```
+<command> --help
+```
+
+Example:
+
+```
+ls --help
+```
+
+---
+
+3. Linux File Permissions
+
+Linux permissions are divided into **3 levels**:
+
+1. User (Owner)
+2. Group
+3. Others
+
+Total permissions = 9
+
+Example:
+
+```
+-rwx rw- r-x
+```
+
+Breakdown:
+
+```
+User   Group   Others
+rwx    rw-     r-x
+```
+
+---
+
+Meaning of Permissions
+
+| Symbol | Meaning | Value | Usage                 |
+| ------ | ------- | ----- | --------------------- |
+| r      | Read    | 4     | View file contents    |
+| w      | Write   | 2     | Modify or delete file |
+| x      | Execute | 1     | Run file as program   |
+
+---
+
+Permission Calculation
+
+Add values:
+
+Example:
+
+```
+rwx = 4+2+1 = 7
+rw- = 4+2+0 = 6
+r-- = 4+0+0 = 4
+```
+
+Example permission:
+
+```
+-rw-r--r--
+ 644
+```
+
+Means:
+
+* User: read, write
+* Group: read
+* Others: read
+
+---
+
+4. chmod (Change Mode)
+
+Used to change file or directory permissions.
+
+---
+
+Syntax (File)
+
+```
+chmod <permission_number> <filename>
+```
+
+Example:
+
+```
+chmod 777 file.txt
+```
+
+Gives full permissions to everyone.
+
+---
+
+Syntax (Directory)
+
+```
+chmod -R <permission_number> <directory>
+```
+
+`-R` means recursive (applies to all subdirectories and files)
+
+Example:
+
+```
+chmod -R 755 mydir
+```
+
+---
+
+Common Permission Settings
+
+| Permission | Number | Meaning                            |
+| ---------- | ------ | ---------------------------------- |
+| -rw------- | 600    | Only user can read and write       |
+| -rw-r--r-- | 644    | User can read/write, others read   |
+| -rwx------ | 700    | Only user has full access          |
+| -rwxr-xr-x | 755    | User full, others read and execute |
+| -rw-rw-rw- | 666    | Everyone read/write (unsafe)       |
+| -rwxrwxrwx | 777    | Everyone full access (very unsafe) |
+
+---
+
+5. chown (Change Ownership)
+
+Used to change file or directory owner.
+
+---
+
+## Syntax (File)
+
+```
+chown username:groupname filename
+```
+
+Example:
+
+```
+chown devops:devops file.txt
+```
+
+---
+
+Syntax (Directory)
+
+```
+chown -R username:groupname directory
+```
+
+`-R` is required for directories.
+
+Example:
+
+```
+chown -R devops:devops mydir
+```
+
+---
+
+6. Software Management in Linux
+
+Software in Linux is called packages.
+
+Examples:
+
+| OS                   | Package Manager |
+| -------------------- | --------------- |
+| RedHat, Amazon Linux | yum             |
+| Ubuntu, Debian       | apt             |
+| Windows              | Microsoft Store |
+| Android              | Play Store      |
+
+---
+
+7. yum Package Manager (RedHat / Amazon Linux)
+
+Used to:
+
+* Search packages
+* Install packages
+* Remove packages
+* Update system
+
+---
+
+## Search Package
+
+```
+yum search <package_name>
+```
+
+Example:
+
+```
+yum search git
+yum search tree
+```
+
+---
+
+## Install Package
+
+```
+yum install <package_name>
+```
+
+Example:
+
+```
+yum install git
+```
+
+Linux will ask:
+
+```
+Is this ok [y/d/N]:
+```
+
+Press:
+
+```
+y
+```
+
+---
+
+## Remove Package
+
+```
+yum remove <package_name>
+```
+
+Example:
+
+```
+yum remove git
+```
+
+---
+
+# 8. Linux System Updates
+
+Updating system improves:
+
+* Security
+* Stability
+* Features
+
+Linux updates are manual.
+
+---
+
+## Update Command
+
+Updates package list.
+
+```
+sudo yum update
+```
+
+This checks for available updates.
+
+---
+
+## Upgrade Command
+
+Actually installs updates.
+
+```
+sudo yum upgrade
+```
+
+This may take time depending on number of packages.
+
+---
+
+# 9. Important Summary (Interview Revision)
+
+Absolute Path
+
+```
+Starts with /
+Example: /home/ec2-user/file.txt
+```
+
+Relative Path
+
+```
+Starts from current directory
+Example: file.txt
+```
+
+chmod
+
+```
+Change permissions
+Example: chmod 755 file.txt
+```
+
+chown
+
+```
+Change ownership
+Example: chown user:group file.txt
+```
+
+yum install
+
+```
+Install package
+Example: yum install git
+```
+
+yum remove
+
+```
+Remove package
+Example: yum remove git
+```
+
+yum update
+
+```
+Check updates
+```
+
+yum upgrade
+
+```
+Apply updates
