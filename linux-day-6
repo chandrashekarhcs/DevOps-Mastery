@@ -4,8 +4,8 @@ Linux Fundamentals
 
 Absolute Path
 
-* Absolute path is the **complete path to a file or directory**.
-* It always starts from the **root directory `/`**.
+* Absolute path is the complete path to a file or directory.
+* It always starts from the root directory `/`.
 * Every file and directory in Linux originates from `/`.
 
 Example:
@@ -20,7 +20,7 @@ This path is valid from anywhere in the system.
 
 Relative Path
 
-* Relative path is the path **relative to your current working directory (pwd)**.
+* Relative path is the path **relative to your current working directory (pwd).
 * It does NOT start with `/`.
 
 Example:
