@@ -100,7 +100,8 @@ Output:
 
 Redirecting to /bin/systemctl restart sshd.service
 -------------------------------------------------------------------------------------
-STEP 6: Enable Password Authentication in SSH Configuration
+STEP 6: Enable Password Authentication in SSH Configuration (To ensure the user created just created can be logged 
+via ssh command line with passwd)
 
 Open SSH configuration file:
 
