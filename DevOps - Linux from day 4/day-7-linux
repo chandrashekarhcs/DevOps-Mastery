@@ -1,0 +1,191 @@
+Linux Advanced Commands
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+Sleep command:
+--------------
+it will pause your terminal/shell for certain time
+
+syntax: sleep <time_in_seconds>
+        sleep 30
+
+Note: Sleep  is generally used in script to delay execution between commands 
+      after starting a service to give it time to initialize before running the next command.
+Can you sleep for minutes or hours instead of seconds?
+   examples:
+   sleep 5        # Sleep for 5 seconds
+   sleep 2m       # Sleep for 2 minutes
+   sleep 1h       # Sleep for 1 hour
+   sleep 1m 30s   # Sleep for 1 minute 30 seconds
+
+
+ps
+--------
+It is used to display information about running processes.
+which stands for "process status."
+
+ps -aux:
+-------
+is used to list all process running in linux.
+ps -ux  ==> displays only processes started by current user
+ps -aux ==> displays all processes started by all user in the server
+
+When you run `ps aux`, the command will display a list of processes in a tabular format. Here's a breakdown of the columns you might see:
+
+- USER: Username of process owner
+- PID: Process ID (unique identifier)
+- %CPU: CPU usage percentage
+- %MEM: Memory usage percentage
+- START: Process start time
+- TIME: Total CPU time used
+- COMMAND: Command that created the process
+
+Here's an example output of `ps aux`:
+
+```
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+john     12345  5.0  2.0 200000 100000 ?       R    Sep10  10:30 /usr/bin/example
+mary     23456  0.0  0.5  50000  25000 pts/1   S    Sep11   0:45 /usr/bin/another
+root     34567  1.0  1.5 150000  75000 tty1     Ss   Sep09   2:00 /sbin/init
+
+Note: ps -ef command also used to list All system processes like pa -aux
+
+
+kill
+--------
+kill command is used to stop/ terminate the running process 
+syntax: kill -9 <ProcessID>
+       # 9 = signal number 
+	
+		
+SED:
+----  
+ sed command is used to replace a string/pattern without opening file.
+ 
+ syntax: sed 's/<old_name>/<new_name>/g' <filename>
+ 
+ sed 's/unix/linux/g' filename  ==> it will show/ print how the changes will be done 
+ 
+ # Make actual changes
+ sed -i 's/<old_name>/<new_name>/g' filename
+ sed -i 's/unix/linux/g' filename 
+ 
+   [ec2-user@ip-172-31-16-223 ~]$ cat samplefile2
+   Hello all,
+   we are learning unix
+   [ec2-user@ip-172-31-16-223 ~]$
+
+   to replace name unix with Linux in above example ==> sed -i 's/unix/Linux/g' samplefile2
+   
+What does the 'g' flag mean in sed?
+A: The 'g' (global) flag replaces all occurrences in each line, not just the first occurrence.   
+
+
+--------------------------------------
+
+
+Find:
+-----
+
+find command is used to search for a file/folder.
+
+syntax: find <path> -name <file/dir-name_tobe_searched>
+
+find /home/ec2-user -iname  <file/dir-name_tobe_searched>
+
+i ==> ignore case-insensitive
+
+
+To refine search only to find a directory (not file or link) 
+find <path> -type d  -name <directoryname_tobe_searched>
+
+To refine search only to find a file (not directory or link) 
+find <path> -type f  -name <filename_tobe_searched>
+
+
+Find provides multiple options for searching a file eg: name, size, group, user, date, permissions, etc..,
+
+
+Assignment:
+-----------
+find command to list files size more than 100MB 
+find command to list files which are been older than 5 days 
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+SSH (Secure Shell):
+-------------------
+using ssh we can login to linux server 
+SSH is the most commonly used way to login secuerly to any linux servers
+
+
+In SSH we have two type of logging in:
+---------------------------------------
+    1. using private key file (.pem file or key-pair file ) ( more secure)
+	   
+	   so far we have logged in to ec2 instances by this type (i.e, by using .pem file or private key file)
+	    
+		syntax: to login using pem file
+		ssh -i <path_to_private_key_file>  <username>@<ipaddress>
+        ssh -i "My_keypair_feb26.pem" ec2-user@ec2-15-207-247-35.ap-south-1.compute.amazonaws.com
+		
+		Note: .pem file is called as private key file or identity file.
+	   
+    2. using password  ( less secure)
+	    
+		syntax: to login using password
+		ssh <username>@<ipaddress>
+        
+		ssh yash@54.224.83.60
+
+
+Note: by default linux blocks password based authentication, so to change that
+
+we have to update the servers ssh configuration file --> /etc/ssh/sshd_config
+
+
+How to login server from users which we have created using passwords?
+--------------------------------------------------------------------
+In linux servers by default, password authentication is set no(disabled), 
+(login as root) enable in the /etc/ssh/sshd_config  file and restart sshd service
+     (PasswordAuthentication no ) change to (PasswordAuthentication yes)
+
+
+
+Assignment:
+-----------
+create a user devopsadmin & ssh directly from gitbash to ec2-instance using  devopsadmin user
+
+
+
+uptime
+-------
+is used to check from how long the system(server) is up & running
+  (or) 
+how long since server is running, along with the current time, number of users, and system load averages.
+
+example output:
+10:24:03 up 3 days,  2:15,  2 users,  load average: 0.12, 0.07, 0.05
+
+Output observation:
+- 10:24:03 → Current server time.
+- up 3 days, 2:15 → Server has been running for 3 days and 2 hours 15 minutes.
+- 2 users → Number of currently logged-in users.
+- load average: 0.12, 0.07, 0.05 → System load averages for the past 1, 5, and 15 minutes.
+
+
+load means: How many processes are using or waiting to use the CPU right now
+
+Load = 1 → CPU is fully busy
+
+Load > 1 → More than one process wants the CPU
+
+who
+----
+command is used to show which all users currently logged into the server.
+
+hostname
+--------
+command is used to print your server name 
