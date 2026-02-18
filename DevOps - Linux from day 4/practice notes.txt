@@ -1,0 +1,158 @@
+🐧 Linux Practice – Quick Revision Notes
+
+---
+
+1️⃣ Directory & File Permissions
+
+ Check directory permission
+
+```
+ls -ld /home/ec2-user
+```
+
+Example output:
+
+```
+drwx------
+```
+
+Meaning:
+
+```
+d  → directory
+rwx → owner
+--- → group
+--- → others
+```
+
+Numeric form:
+
+```
+700
+```
+
+✔ Only owner can access
+❌ Others cannot enter directory
+
+---
+
+2️⃣ Why “Permission Denied” Happened
+
+Even though file had:
+
+```
+-rw-r--r--
+```
+
+You still got:
+
+```
+Permission denied
+```
+
+Reason:
+
+Parent directory had:
+
+```
+drwx------
+```
+
+Linux Rule:
+To access a file:
+
+Directory must have execute (x) permission
+File must have read (r) permission
+
+If directory blocks → file cannot be accessed.
+
+---
+
+3️⃣ Switching Users
+
+Wrong:
+
+```
+su -user201 ❌
+```
+
+Correct:
+
+```
+su - user201 ✅
+```
+
+`-` loads full login environment.
+
+---
+
+ 4️⃣ Using grep with ls
+
+I practiced:
+
+```
+ls -l | grep demo
+```
+
+Meaning:
+
+`|` → pipe
+`grep` → filter output
+Used for searching files or logs
+
+Very important for DevOps log debugging.
+
+---
+
+5️⃣ Package Management (yum)
+
+Search package
+
+```
+yum search tree
+```
+
+Install package
+
+```
+yum install tree ❌ (needs root)
+sudo yum install tree ✅
+```
+
+Remove package
+
+```
+sudo yum remove tree
+```
+
+I practiced:
+
+* Searching
+* Installing
+* Removing software
+
+---
+
+ 6️⃣ Understanding sudo
+
+* Normal user cannot install software
+* sudo = temporary root access
+* Required for system-level changes
+
+---
+
+ 7️⃣ Home Directory Protection
+
+Default home directory:
+
+```
+drwx------
+```
+
+Meaning:
+
+Users cannot access other users' home directories
+Security feature in Linux
+
+
+
