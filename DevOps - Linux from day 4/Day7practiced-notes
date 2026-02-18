@@ -1,0 +1,398 @@
+Linux process + file + system monitoring practice session
+
+
+-------------------------------------------------------------------
+PART 1 — Process Management Practice
+
+-------------------------------------------------------------------
+
+`sleep` command
+
+You ran:
+
+-------------------------------------------------------------------
+sleep 5
+sleep 2
+-------------------------------------------------------------------
+
+### What it does:
+
+* Pauses the terminal for X seconds
+* Creates a temporary process
+
+### Why useful:
+
+* Used in scripts
+* Used in automation
+* Used in cron jobs
+* Used in CI/CD delays
+
+-------------------------------------------------------------------
+
+`ps` command
+
+You ran:
+-------------------------------------------------------------------
+ps
+-------------------------------------------------------------------
+
+### What it shows:
+
+Processes running in current terminal session only.
+
+Output example:
+
+-------------------------------------------------------------------
+PID   TTY   TIME   CMD
+1822  pts/0 00:00  bash
+```
+
+-------------------------------------------------------------------
+
+`ps -aux`
+
+You ran:
+
+-------------------------------------------------------------------
+ps -aux
+-------------------------------------------------------------------
+
+### What it shows:
+
+ALL processes in the system (very important)
+
+Breakdown:
+
+-------------------------------------------------------------------
+a → show all users
+u → detailed format
+x → include background processes
+-------------------------------------------------------------------
+
+You saw:
+
+* systemd
+* sshd
+* amazon-ssm-agent
+* kernel processes
+* your bash session
+
+This is real production-level process monitoring.
+
+-------------------------------------------------------------------
+
+`ps -ux`
+
+Shows only processes of current user.
+
+You saw:
+
+-------------------------------------------------------------------
+ec2-user processes only
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+
+`ps -ef`
+
+Another way to list all processes (different format).
+
+Common in DevOps interviews.
+
+-------------------------------------------------------------------
+-e → all processes
+-f → full format
+```
+
+-------------------------------------------------------------------
+
+`kill -9`
+
+You tried:
+
+-------------------------------------------------------------------
+kill -9 5935
+-------------------------------------------------------------------
+
+### What it does:
+
+* Sends SIGKILL signal
+* Forcefully terminates process
+
+Why it failed:
+
+```
+No such process
+```
+
+Because `ps` process ends immediately after running.
+
+You tried to kill a process that already exited.
+
+Important learning:
+`ps` is a short-lived process.
+
+-------------------------------------------------------------------
+
+PART 2 — File Operations Practice
+
+-------------------------------------------------------------------
+
+`touch`
+
+```
+touch sample.txt
+```
+
+Creates empty file.
+
+-------------------------------------------------------------------
+
+`vi`
+
+```
+vi sample.txt
+```
+
+Used to edit file contents.
+
+You added:
+
+```
+sample
+sample linux
+```
+
+-------------------------------------------------------------------
+
+`cat`
+
+```
+cat sample.txt
+```
+
+Displays file contents.
+
+-------------------------------------------------------------------
+
+ `sed` command
+
+You ran:
+
+```
+sed 's/linux/fileext/g' sample.txt
+```
+
+What it does:
+
+Substitutes text temporarily (does NOT modify file).
+
+Then:
+
+```
+sed -i 's/linux/newtext/g' sample.txt
+```
+
+`-i` → modifies file permanently.
+
+So, practiced:
+
+* Text manipulation
+* Automation tool
+* Log processing
+
+Very important in DevOps.
+
+-------------------------------------------------------------------
+
+PART 3 — File Searching Practice
+
+---
+
+`find` command
+
+You tried:
+
+```
+find /home/ec2-user -censusdata.txt ❌
+```
+
+Wrong syntax.
+
+Correct:
+
+```
+find /home/ec2-user -name censusdata.txt
+```
+
+You also searched:
+
+```
+find /home/ec2-user -type d -name dir1
+```
+
+Meaning:
+
+* `-type d` → search directories
+* `-name` → match name
+
+This is heavily used in servers.
+
+-------------------------------------------------------------------
+
+PART 4 — System Monitoring Commands
+
+-------------------------------------------------------------------
+
+`uptime`
+
+-------------------------------------------------------------------
+uptime
+-------------------------------------------------------------------
+
+Shows:
+
+* How long system is running
+* Load average
+* Number of users
+
+You saw:
+
+```
+load average: 0.00
+```
+
+Meaning system is idle.
+
+-------------------------------------------------------------------
+
+`who`
+
+```
+who
+```
+
+Shows:
+
+* Logged in users
+* Login time
+* IP address
+
+-------------------------------------------------------------------
+
+ `date`
+
+```
+date
+```
+
+Shows system date & time.
+
+-------------------------------------------------------------------
+
+`hostname`
+
+```
+hostname
+```
+
+Shows server hostname:
+
+```
+ip-172-33-22.ap-south-1.compute.internal
+```
+
+This confirms:
+You are in AWS EC2 instance.
+
+-------------------------------------------------------------------
+
+ `uname`
+
+```
+uname
+```
+
+Shows OS type:
+
+```
+Linux
+```
+
+Try:
+
+```
+uname -a
+```
+
+For full system info.
+
+-------------------------------------------------------------------
+
+What You Actually Practiced (Big Picture)
+
+You practiced 4 major DevOps skill areas:
+
+---
+
+1. Process Management
+
+* ps
+* kill
+* sleep
+
+Used in:
+
+* Debugging high CPU
+* Killing stuck apps
+* Monitoring servers
+
+---
+
+2. File Editing & Text Processing
+
+* vi
+* cat
+* sed
+
+Used in:
+
+* Config file editing
+* Log modification
+* Automation scripts
+
+---
+
+3. File & Directory Search
+
+* find
+* grep
+
+Used in:
+
+* Searching logs
+* Finding config files
+* Troubleshooting
+
+---
+
+4. System Monitoring
+
+* uptime
+* who
+* hostname
+* uname
+* date
+
+Used in:
+
+* Checking system health
+* Identifying server
+* Production troubleshooting
+
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+
+We are building real muscle now 💪
+-------------------------------------------------------------------
+-------------------------------------------------------------------
