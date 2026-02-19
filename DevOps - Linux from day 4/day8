@@ -1,0 +1,380 @@
+Ports:
+------
+Port numbers are used as Point of communication
+
+linux system has 65,000 port numbers available
+
+0-1000 ==> reserved by linux
+
+
+ssh - port 22
+http - port 80
+https - port 443
+telnet - port 23
+
+
+netstat (network statsics)
+-------------------------
+command is used to list all listnening & active ports
+
+syntax: netstat -lntp
+
+
+
+
+--------------------------------
+Linux OS:
+---------
+linux operating system has 2 major distributions.
+
+1. RHEL Family (Red Hat Enterprise Linux)
+   
+   Common Distributions: Red Hat Enterprise Linux (RHEL), CentOS , Fedora
+   Best suited for business and enterprise environments
+   Support: Commercial support available (paid plans, official technical support)
+
+   Package Manager: yum or dnf (used for managing software packages)
+   Package Format: .rpm (Red Hat Package Manager format)  
+
+   yum install  git ==> it will download the git.rpm file ==> install the git from the downloaded rpm file 
+
+   
+
+2. Debian Family
+   Common Distributions: Debian & Ubuntu (most popular Debian-based distribution)
+   Widely used by developers, open-source communities, and personal users
+   Support: Free and community-based support (forums, Stack Overflow, etc.)
+
+   Package Manager: apt (Advanced Package Tool)
+   Package Format: .deb (Debian package format)
+
+
+
+
+-------------------------------------------------------------------------------
+How to check OS related info in linux ?
+
+cat /etc/os-release
+
+--------------------------------------------------------------------------------
+
+top
+-------
+ Top Command is used to check which process utilizing what % of CPU & What % of Memory(RAM)
+ Top command helps in understanding system performance.
+
+ top -u <username>  ==> Shows processes for a specific user.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Note:
+-----
+
+SERVER == COMPUTERS == MACHINES === VIRTUAL MACHINE === EC2 INSTANCES == SYSTEM ========> All are same
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Networking :
+=============
+Two or more systems connected each other ==>> networking 
+
+systems ==>>>nothing but servers.
+
+Two servers are said to be in same network ==>>> only if Two servers connected each other via cables.
+
+======================================================================================
+
+Networking advantages..
+
+1. files transfer ==>>> from one server to another server.
+
+2. Remoteuserly login ==>> from one server to another server. 
+
+
+--------------------------------------------------------------------------------
+
+ 
+scp (secure copy)
+------------------
+used to transfer files/directory from one server to another(remote) server
+
+syntax:
+--------
+For File:   
+scp <file_tobe_copied> <username_of_targetserver>@<ipaddress_of_targetserver>:<path_in_targetserver>
+
+scp numbersfile  server2-user@15.207.98.28:/tmp 
+
+
+scp census_data_tobecopied  hari3@13.49.240.55:/home/hari3
+
+ 
+For Directory-->
+scp -r <file_tobe_copied> <username_of_targetserver>@<ipaddress_of_targetserver>:<path_in_targetserver>
+
+-r ==> mandatory while copying directories
+
+
+scp -r test soni@54.162.242.161:/home/soni/
+
+Note:
+-----
+- create another ec2 instance, create user with password in both servers  
+- ensure password authentication is enabled in both servers (enable in the /etc/ssh/sshd_config  file)
+- dont try to scp for ec2-user (if you have not set passsword for ec2-user)
+
+---------------------------------------------------------------------------------------
+
+ping
+----
+ping command is used to check network connectivity between our server and a remote server or website.
+ping is used to check any server is up & running 
+
+
+syntax:
+ping <ip_of_remote_server>
+ping google.com  
+(use ctrl + c to come out of ping )
+
+
+--------------------------
+cut command
+-------------------
+is used to cut the content of a file column wise
+syntax: cut -d " " -f<columnNumber> <filename>
+
+-d → the delimiter (separator between columns), e.g., space " " (or) colon ":" 
+-f → Specifies the field number (column number) to extract
+
+vi cut_example 
+----------------------------
+AndhraPradesh AP hyderabad
+ArunachaPradesh AC Itanagar
+Assam AS guwahati
+Bihar BH patna
+Chhattisgarh CG Raipur
+karanataka KA benagluru
+uttarparadesh UP lucknow
+jammuKashmir JK srinagar
+-------------------------
+
+vi cut_example2
+----------------------------
+AndhraPradesh|AP|hyderabad
+ArunachalPradesh|AC|Itanagar
+Assam|AS|guwahati
+Bihar|BH|patna
+Chhattisgarh|CG|Raipur
+karanataka|KA|benagluru
+uttarparadesh|UP|lucknow
+jammuKashmir|JK|srinagar
+-------------------------
+logs:
+
+[ec2-user@ip-172-31-93-35 ~]$ cut -d " " -f1 cut_example
+AndhraPradesh
+ArunachalPradesh
+Assam
+Bihar
+Chhattisgarh
+karanataka
+uttarparadesh
+jammuKashmir
+[ec2-user@ip-172-31-93-35 ~]$ cut -d " " -f2 cut_example
+AP
+AC
+AS
+BH
+CG
+KA
+UP
+JK
+[ec2-user@ip-172-31-93-35 ~]$ cut -d " " -f3 cut_example
+hyderabad
+Itanagar
+guwahati
+patna
+Raipur
+benagluru
+lucknow
+srinagar
+[ec2-user@ip-172-31-93-35 ~]$
+[ec2-user@ip-172-31-93-35 ~]$
+[ec2-user@ip-172-31-93-35 ~]$ cut -d " " -f1,3 cut_example
+AndhraPradesh hyderabad
+ArunachalPradesh Itanagar
+Assam guwahati
+Bihar patna
+Chhattisgarh Raipur
+karanataka benagluru
+uttarparadesh lucknow
+jammuKashmir srinagar
+
+
+
+
+awk_example_file
+------------------
+AndhraPradesh    AP  hyderabad
+ArunachaPradesh  AC  Itanagar
+Assam            AS  guwahati
+Bihar            BH  patna
+Chhattisgarh     CG  Raipur
+karanataka       KA  benagluru
+uttarparadesh    UP  lucknow
+jammuKashmir     JK  srinagar
+-------------------------------------
+
+
+
+-------------------------------------------------------------------------------------------
+awk
+---------------------------------------------------------------------------------------
+awk command is used to cut file column wise & row wise
+
+syntax: awk -F " " '{print$1}' <filename>
+
+-F ==field separator
+
+(i)to print/cut first column of a file
+
+awk -F " " '{print$1}' <filename>
+
+(ii)to print/cut third column of a file
+
+awk -F " " '{print$3}' <filename>
+
+(iii) to print/cut last column of a file
+   awk -F " " '{print$NF}' disk_util_file
+   
+(iv) to print/cut second last column of a file
+   awk -F " " '{print$(NF-1)}' disk_util_file
+
+
+
+
+   
+
+[root@ip-172-31-10-87 dirA]# cat awk_example_file
+AndhraPradesh    AP  hyderabad
+ArunachaPradesh  AC  Itanagar
+Assam            AS  guwahati
+Bihar            BH  patna
+Chhattisgarh     CG  Raipur
+karanataka       KA  benagluru
+uttarparadesh    UP  lucknow
+jammuKashmir     JK  srinagar
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# awk -F " " '{print$1}' awk_example_file
+AndhraPradesh
+ArunachaPradesh
+Assam
+Bihar
+Chhattisgarh
+karanataka
+uttarparadesh
+jammuKashmir
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# awk -F " " '{print$2}' awk_example_file
+AP
+AC
+AS
+BH
+CG
+KA
+UP
+JK
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# awk -F " " '{print$3}' awk_example_file
+hyderabad
+Itanagar
+guwahati
+patna
+Raipur
+benagluru
+lucknow
+srinagar
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# df -kh
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        4.0M     0  4.0M   0% /dev
+tmpfs           475M     0  475M   0% /dev/shm
+tmpfs           190M  2.8M  188M   2% /run
+/dev/xvda1      8.0G  1.6G  6.5G  20% /
+tmpfs           475M     0  475M   0% /tmp
+tmpfs            95M     0   95M   0% /run/user/1000
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# df -kh | head -5
+Filesystem      Size  Used Avail Use% Mounted on
+devtmpfs        4.0M     0  4.0M   0% /dev
+tmpfs           475M     0  475M   0% /dev/shm
+tmpfs           190M  2.8M  188M   2% /run
+/dev/xvda1      8.0G  1.6G  6.5G  20% /
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# df -kh | head -5 | tail -1
+/dev/xvda1      8.0G  1.6G  6.5G  20% /
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]#
+[root@ip-172-31-10-87 dirA]# df -kh | head -5 | tail -1 | awk -F " " '{print$5}'
+20%
+[root@ip-172-31-10-87 dirA]#
+
+   
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+variables:
+----------
+Variables are memory location which can store some values.
+
+syntax: <variable_name>=<variable_value>
+        variable="value" → storing data
+        $variable → using the stored data
+  
+
+How to print / check / substitute / call values of a variable?
+--------------------------------------------------------------
+
+$ (dollar) is mandatory while substituting varaible ==> $<variable_name>
+
+echo $<variable_name>
+
+
+Example 1:
+ PLAYER=viratKohli
+ echo " my favorite sportsmen is $PLAYER "
+
+
+Example 2: 
+  user_name="devopsAdmin"
+  echo "Hello, $user_name! How are you today?"
+
+Example 3: 
+ 
+[ec2-user@my-server-1 ~]$ project="DevOps"
+[ec2-user@my-server-1 ~]$ echo "$project project started"
+DevOps project started
+
+#Now changing value of same variable:
+
+[ec2-user@my-server-1 ~]$ project="CloudMigration"
+[ec2-user@my-server-1 ~]$ echo "$project project started"
+CloudMigration project started
+
+
+Example 4: Multiple Variables
+[ec2-user@my-server-1 ~]$ user="admin"
+[ec2-user@my-server-1 ~]$ server="10.0.0.25"
+[ec2-user@my-server-1 ~]$ echo "Login with $user to $server"
+Login with admin to 10.0.0.25
