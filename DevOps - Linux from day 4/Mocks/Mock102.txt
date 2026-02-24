@@ -1,0 +1,81 @@
+Linux + AWS Practice Notes
+1. SSH into EC2 Instance
+
+Used a .pem private key to connect to an AWS EC2 server using SSH.
+
+Command:
+
+ssh -i devops-2026.pem ec2-user@<public-dns>
+
+Learned secure remote login using key-based authentication instead of passwords.
+
+2. Viewing System Users
+
+Checked existing Linux users using:
+
+cat /etc/passwd
+
+Understood that this file stores all system user accounts, home directories, and login shells.
+
+3. Creating a New User
+
+Created a new Linux user:
+
+sudo useradd test-u2
+
+Set password using root privileges:
+
+sudo passwd test-u2
+
+Learned that only root can manage other users’ passwords.
+
+4. Switching Users
+
+Logged into another user account:
+
+su - test-u2
+
+This loads the user’s environment and home directory.
+
+5. SSH Directory and Permissions
+
+Created SSH configuration directory:
+
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+
+Learned correct permissions required for SSH security.
+
+6. Setting Up Key-Based Login
+
+Added public key to authorized keys:
+
+cat id_rsa.pub >> ~/.ssh/authorized_keys
+
+This allows passwordless SSH login for that user.
+
+7. Generating SSH Keys
+
+Generated a key pair:
+
+ssh-keygen
+
+Files created:
+
+id_rsa → private key (kept secret)
+
+id_rsa.pub → public key (shared)
+
+8. Copying Key to Another Server
+
+Used SCP to transfer public key:
+
+scp id_rsa.pub server01@<private-ip>:~
+
+Learned secure file transfer between servers.
+
+9. Server-to-Server SSH Setup
+
+Attempted SSH login between two EC2 instances using private IP inside AWS VPC.
+
+Understood that access fails until the public key is added to the destination server.
