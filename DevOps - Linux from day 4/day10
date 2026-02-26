@@ -1,0 +1,209 @@
+-------------------------------------------- SHELL Scripting Day2--------------------------------------------
+
+passwordless conection:
+----------------------
+
+step1: server-A
+----------------
+ssh-keygen
+- id_rsa 
+- id_rsa.pub 
+
+step2: server-B
+----------------
+create a new user & set password for that user
+update /etc/ssh/sshd_config file, passwordauthentication no ==> yes, restart ssh service 
+ 
+step3: server-A
+----------------
+cd .ssh 
+ssh-copy-id <user>@<server2-ip> 
+<<it will ask password for first time only>>
+
+
+Observation:
+------------
+to set passwordless conection server-A ==> server-B.
+we have to copy server-A public_key ( id_rsa.pub ) append it into .ssh/authorized_keys file of server-B
+
+
+
+
+Note:
+-----
+- static content (variable key & value stored inside script /file )= fixed  = Hardcoded == all are same
+ex: employee_data.sh
+
+- dynamic ==> passing values into script, while executing script
+
+
+[ec2-user@ip-172-31-93-35 ~]$ cat employee_data.sh
+#!/bin/bash
+set -x
+EMP_NAME=alice
+EMP_ID=54234
+EMP_LOC=bangalore
+EMP_STATE=karnataka
+echo "Display employee name $EMP_NAME "
+echo "Display emloyee id $EMP_ID "
+echo "Display employee location $EMP_LOC "
+echo "Display employee state $EMP_STATE "
+
+
+
+
+debugging:
+----------
+to know what exactly happening in script, use set -x below shebang line
+
+
+
+Command line arguments
+------------------------------
+ in command line arguments we will give input to the script dynamically
+ 
+ used to pass dynamic values to script while executing script
+ 
+ syntax:  sh <scriptname>.sh <argument1> <argument2> <argument3>
+ 
+ $1 --> 1st argument value
+ $2 --> 2nd argument value
+ $3 --> 3rd argument value
+ 
+ 
+ 
+-----------------------------------------------------------------
+
+ex of Command line arguments
+
+[ec2-user@ip-172-31-93-35 ~]$ cat employee_data_2.sh
+echo "Display employee name $1 "
+echo "Display emloyee id $2 "
+echo "Display employee location $3 "
+echo "Display employee state $4 "
+
+
+while executing pass arguments like below format
+sh <scriptname>.sh <argument1> <argument2>    <argument3>   <argument4>
+
+
+
+[ec2-user@ip-172-31-93-35 ~]$ sh employee_data_2.sh rohit 18976 mumbai Maharashtra
+Display employee name rohit 
+Display emloyee id 18976
+Display employee location mumbai
+Display employee state Maharashtra
+
+observations from the above example:
+ $1 ==>  rohit   --> 1st argument to script 
+ $2 ==>  1876         --> 2nd argument to script 
+ $3 ==>  mumbai       --> 3rd argument to script
+ $4 ==>  Maharashtra  --> 4th argument to script
+
+
+ 
+ ---------------------------------------------------------
+
+
+arithamatic expressions
+----------------------------
+we need to use expr keyword to do any arithamatic operations in linux
+
+syntax: expr <value1> <arithamatic_operator> <value2>
+
+arithamatic operators are
+    + addition
+    - substarction
+    / division
+    * multiplication
+
+Note:
+ \ (backward slash) is called as escape charecter in linux : it is used to bypass some functionalities( its used in multiplying with *)
+  expr $value1 \* $value2
+
+arithamatic_operators
+------------------------
+
+[ec2-user@ip-172-31-93-35 ~]$ value1=20
+[ec2-user@ip-172-31-93-35 ~]$ value2=5
+[ec2-user@ip-172-31-93-35 ~]$
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 + $value2
+25
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 - $value2
+15
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 * $value2
+expr: syntax error
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 \* $value2
+100
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 / $value2
+4
+[ec2-user@ip-172-31-93-35 ~]$ expr $value1 % $value2
+0
+[ec2-user@ip-172-31-93-35 ~]$
+
+
+Note:
+----------
+
+value1=25
+value2=15
+
+   to find sum of value1 & value2
+     SUM=value1+value2
+	 SUM=25+15
+	 SUM=40
+
+In all programming language / scripting first execution will always be R.H.S(right hand side) like how it has been taught in our school
+
+ 
+ 
+Note:
+-----
+
+ 1. ` ` --> back quoutes, these are used for mathematical opertions 
+          eg: SUM=`expr $value1 + $value2`
+ 
+ 
+ 
+----------------------------
+Hardcoded format 
+---------------------
+[ec2-user@ip-172-31-93-35 ~]$ cat arithmatic_op.sh
+#!/bin/bash
+#Author= bharath
+value1=25
+value2=15
+#to find sum of value1 & value2
+SUM=`expr $value1 + $value2`
+echo " sum of value1 + value2 is $SUM "
+
+
+ Dynamic parsing / Command line arguments parsing
+ -------------------------------------------------------------
+ [ec2-user@ip-172-31-93-35 ~]$ cat arithmatic_op_2.sh
+#!/bin/bash
+#Author= vijay
+#to find sum of value1 & value2
+SUM=`expr $1 + $2`
+echo " sum of argument_value1 + argument_value2 is $SUM "
+[ec2-user@ip-172-31-93-35 ~]$
+
+
+[ec2-user@ip-172-31-93-35 ~]$ sh arithmatic_op_2.sh 70 20
+echo " sum of argument_value1 + argument_value2 is 90 "
+----------------------------------------------------------------------------
+
+      
+
+
+Other important dollar notations used in shell scripts:
+-------------------------------------------------------
+
+ $# --> To know number of arguments passed to script
+ $$ --> To know PID(processID) of the script 
+ $* --> To print all arguments passed to script
+ $0 --> To Print the name of script which i am executing 
+
+
+ 
+
