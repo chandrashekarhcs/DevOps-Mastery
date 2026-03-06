@@ -1,0 +1,200 @@
+To store commands output into a variable?
+-----------------------------------------
+varibale_name=$(<command_here>)
+
+ex: assign disk usage to variable  DISK_UTILIZATION
+DISK_UTILIZATION=$(df -kh . | awk -F " " '{print$5}' | tail -1 | sed 's/%/ /g')
+
++++++++++++++++++++++++++++++++
+
+write a script to check current disk utilization 
+- if disk usage is more than 70% 
+  script should send an email to devops team
+  also clear the files under /tmp & /opt/*.logs 
+
+#!/bin/bash 
+
+DISK_UTILIZATION=$(df -kh . | awk -F " " '{print$5}' | tail -1 | sed 's/%/ /g')
+
+if  [ $DISK_UTILIZATION  -ge 70 ]
+then 
+  echo "system disk usage has gone beyond 70% please take action"
+  mail -s "Subject: High disk usage" devopsteam@xyz.com 
+  rm -rf /tmp/*
+else 
+ echo "system disk usage is lesser than 70%, we are good"
+fi 
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+wget (Download Files): 
+----------------------
+A command-line tool for downloading files from the web.
+
+syntax:  wget <URL> (Downloads the file from the specified  URL)
+         wget http://example.com/file.zip
+		 wget https://dlcdn.apache.org/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip
+
+
+curl (Transfer Data): 
+-----------------------
+ A tool for transferring data from or to a server using various protocols (including HTTP, HTTPS, FTP, and more).
+
+Usage:
+- Fetch URL Content: curl <URL> (Displays the content of the URL)
+- Download File: curl -O
+ <URL> (Downloads the file from the URL)
+- Upload File: curl -T <file> <URL> (Uploads file to the specified URL)
+
+
+
+What is a Process?
+------------------
+A process is any running instance of a command or program(script). 
+It could be:
+	â€¢ A command or system program (e.g., vi, cat, scrit)
+	â€¢ It has a unique Process ID (PID) and runs in kernel 
+ Think of a process as "what is actually running on the CPU".
+
+
+What is a Service?
+------------------
+A service is a special process that runs in the background, usually started by the systemd.
+	â€¢ Services are usually long-running.
+	â€¢ They start automatically at boot or are manually controlled using systemctl or service.
+	â€¢ They usually do not interact directly with users.
+Think of a service as a special type of process that is managed and run in the background by the system.
+
+Difference between process & services
+
+------------------------------------------------------------------------------------------------
+| Feature        | Process                              | Service                              |
+------------------------------------------------------------------------------------------------
+| What is it?    | A running program                    | A background program (daemon)        |
+| Started by     | User or system manually              | System at boot or by systemctl       |
+| Managed by     | Kernel and user tools like ps, kill  | Init system like systemd             |
+| Runs in        | Foreground or background             | Usually in background                |
+| Examples       | bash, python, top                    | sshd, nginx, mysql                   |
+| View with      | ps aux, top, htop                    | systemctl list-units --type=service  |
+| Control with   | kill, nice, renice                   | systemctl start/stop/status          |
+------------------------------------------------------------------------------------------------
+Note:
+-----
+Every services create one or more processes, but not all processes are services.
+
+
+
+Service Control:
+---------------
+- service command is used to manage services on older Linux systems.
+- It provides basic functionality like starting, stopping, and restarting services.
+
+Example:
+- `sshd` is a service responsible for controlling SSH (remote login) behavior.
+
+Syntax:
+  service <service-name> <start | stop | restart>
+  
+Commands:
+- service sshd start     ==> Starts the SSH service
+- service sshd stop      ==> Stops the SSH service
+- service sshd restart   ==> Restarts the SSH service
+
+
+systemctl
+---------
+- `systemctl` is a command-line tool used to control and manage services on modern Linux systems (with systemd).
+
+Common Commands:
+----------------
+- systemctl status  <service-name>   # Check the status of a service
+- systemctl start   <service-name>   # Start a service
+- systemctl stop    <service-name>   # Stop a service
+- systemctl restart <service-name>   # Restart a service
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Crontab Installations:
+---------------------------
+sudo yum install cronie -y
+sudo systemctl enable crond.service
+sudo systemctl start crond.service
+
+
+sh <disk-util>.sh 
+
+on your birthdys your bank, will they send message ==> schedule 
+
+
+
+crontab: 
+--------
+crontab` is a scheduler used to run scripts or commands automatically at specified times and intervals.
+
+It's useful for tasks like backups, log rotation, system cleanups, etc.
+
+* * * * *  sh <absolute_path_to_myscript>.sh
+â”‚ â”‚ â”‚ â”‚ â”‚
+â”‚ â”‚ â”‚ â”‚ â””â”€â”€â”€ Day of the week (0 - 6 or SUN , MON , SAT )
+â”‚ â”‚ â”‚ â””â”€â”€â”€â”€â”€ Month (1 - 12 or JAN, FEB, DEC)
+â”‚ â”‚ â””â”€â”€â”€â”€â”€â”€â”€ Day of the month (1 - 31)
+â”‚ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€ Hour (0 - 23)
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Minute (0 - 59)
+
+
+syntax:     m     h   dom    mon   dow  sh  <absolute_path_to_myscript>  
+            0     12  25     12    *   sh disk_space_check.sh  
+
+- RUN script on DEC 25 2025 - 11.30 minutes'O CLOCK
+           			
+where:
+m    ==> Minutes.    
+         #The allowed values reange : 0 to 59.
+			
+h    ==> Hours.        
+         #The allowed values range: 0 to 23 
+			 
+dom  ==> Day of Month.   
+         #Allowed values range: 1 to 31
+			 
+mon  ==> Month of Year.   
+         #Allowed values range is: 1 to 12 
+         #Even we can use terms like JAN,FEB,MAR etc 
+			  
+dow  ==> Day of week.    
+         #The allowed values range is: 0 to 6 
+         #Even we can use terms like SUN(0),MON(1),TUE(2)  WED (3) THU(4) FRI(5) SAT(6)
+
+
+cron commands
+-------------------
+crontab -l  :    To list  cron jobs which are already configured.
+crontab -e  :    To edit  crontab & schedule scripts .
+
+
+Common crontab Examples:
+-----------------------
+				 
+- Run script AUG 15th 12 o clock
+   00    12  15  AUG  FRI  sh /home/ec2-user/disk_space_check.sh 
+
+- RUN script every minute of day , hour,  month, year
+   * * * * *  MON  sh /home/ec2-user/disk_space_check.sh 
+    
+- Run script Everday 12 o clock 
+   00 12 * * *  sh /home/ec2-user/disk_space_check.sh
+
+- Run script only on Monday & thursday everyminute
+   *  * * DEC MON,THU sh /home/ec2-user/disk_space_check.sh
+
+
+# Configure cron job which writes hello from cron message to cron_output_log  for every minute. 
+$ crontab -e
+* * * * * echo "Hello from cron" >> /home/ec2-user/cron_output_log2
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
