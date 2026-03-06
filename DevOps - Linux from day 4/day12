@@ -1,0 +1,263 @@
+Note before Automating / writing scripts:
+-----------------------------------------
+- we have to try commands manually before putting those into script 
+- STRING means group of alphabets / pattern
+
+ALL possible conditional operators which can be used with "if conditions" 
+------------------------------------------------------------------------
+	 a.conditions used for  matching / checking "strings" are :
+	 
+	 eg: string => alice = junjesh
+
+         [ $STRING == STRING ] - Equal
+         [ $STRING != STRING ] - Not Equal
+	     [ -z $STRING ] - Empty string 
+         [ -n $STRING ] - Not empty string	 
+		       
+	b. conditions used for "mathematicall operations" / Relational operators are : 
+	     here NUM means number
+         [ $NUM -eq NUM ] - Equal
+         [ $NUM -ne NUM ] - Not equal
+         [ $NUM -lt NUM ] - Less than
+         [ $NUM -le NUM ] - Less than or equal
+         [ $NUM -gt NUM ] - Greaterthan
+         [ $NUM -ge NUM ] - Greater
+    
+	c. conditions used for checking file/directory/ link types are:
+          [ -f $FILE ] - Exists        ==> to check file Exists are not
+		  [ -d $DIRECTORY ] - Directory  ==> to check directory Exists are not
+		  [ -h $FILE ] - Symlink/softlink    ==> to check link is softlik are not
+	
+
+	d. based on commands exit status :
+	      [ $? -eq 0 ]   # conditions used, if previous commans return zero/ non zero exit code
+
+If $? equals zero, it indicates success.
+If $? is non-zero, it indicates failure.
+
+examples on if conditions used for checking file/directory/ link types are:
+--------------------------------------------------------------------------------
+#check the file exists/ are not in the given name (as input from read command)
+
+Note:
+----
+
+[ -f $FILENAME ] ==>  this condition block used to check FILE in mentioned name exists or not ?
+  
+[ -d $DIRECTORYNAME ] ==> condition block used to check directory in mentioned name exists or not
+
+[ -h $FILENAME ] ==> this condition block used to check hardlink in mentioned name exists or not ?
+
+
+example1: script to check wheteher file exists or not in present working directory 
+
+FILENAME=$1  #pass filename to be checked from command line argument
+if [ -f $FILENAME ]
+then
+   echo "file f1 exists"
+else 
+   echo "file f1 doesent exists...please check"
+fi
+
+example2: script to check wheteher directory exists or not in present working directory 
+
+if  [ -d $1 ]  #pass directory name to be checked from command line argument directly
+then 
+   echo "directory exists......"
+else 
+   echo  "directory doesent exists....please check"
+fi
+
+
+ASSIGNMENTS:
+write shell script to verify if file /etc/passwd exists are not [ -f "/etc/passwd" ]
+write shell script to verify if directory /home/ec2-user exists are not	[ -d "/home/ec2-user" ]
+
+
+
+script to check the file exists/ are not in the given name (as input from read command):
+-------------------------------------------------------------------------------------
+
+
+[ec2-user@ip-172-31-24-167 ~]$ cat if_check_for_fileName.sh
+#!/bin/bash
+echo " Enter input file name you need to check............"
+read FILE_NAME
+if [ -f $FILE_NAME ]
+then
+  echo " file name provided by you in read command is available in pwd & please find its details below....."
+else
+  echo " file name provided in read command is unavailable/doesent exist....."
+fi
+
+
+
+
+Script to check the directory exists/ are not in the given name (as input from read command) :
+----------------------------------------------------------------------------------------------
+
+[ec2-user@ip-172-31-24-167 ~]$ cat if_check_for_directoryName.sh
+#!/bin/bash
+echo " Enter input directory name you need to check............"
+read DIR_NAME
+if [ -d $DIR_NAME ]
+then
+  echo " Directory name provided by you in read command is available & please find its details below....."
+  ls -lrt | grep $DIR_NAME
+else
+  echo " Directory name provided in read command is unavailable/doesent exist....."
+fi
+
+
+Note: 
+------
+&& (AND) and || (OR) are used to combine multiple commands, controlling how they execute based on the success or failure of previous commands.
+
+Logical and (&&):
+-----------------
+syntax: <command1> && <command2> 
+observation: command 2 will only run if  command1  is passed  (i.e exit status  of command1 is 0).
+
+example: 
+mkdir myfolder && cd myfolder
+observation: cd myfolder will only run if mkdir myfolder is successful (i.e., the folder was created without errors)
+	
+Logical or ( || ):
+------------------
+syntax: <command1> || <command2>
+observation: command2 runs only if command1 fails (exit status is non-zero).
+
+example:
+cd myfolder || echo "Directory not found"
+observation: echo "Directory not found" will run only if cd myfolder fails (i.e., if the folder doesnâ€™t exist).
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+What is a Loop?
+--------------
+A loop is a group of commands that are executed repeatedly until a certain condition is met.
+
+Loops
+----------
+shell scripts can repeat particular instruction again and again, until particular condition satisfies.
+A group of instruction that is executed repeatedly is called a loop.
+
+why loops?
+  If we want to execute a group of commands multiple times then we should go for loops / iterative statements.
+
+Types of loops
+Majorly we have two types of loops
+â€¢ For loop
+â€¢ While loop
+
+For Loop:
+---------
+  Used when you know in advance how many times to repeat.
+
+ for loop operates on lists of items. It repeats a set of commands for every item in a list.
+
+The for loop syntax:
+
+for variable in value1 value2 ... valueN
+do
+       #execute same set of commands on all variable values 
+	   command1
+       command2
+       ....
+       ....
+       commandN
+done
+
+
+example 1: Script to Print welcome 5 times using for loop
+
+
+#!/bin/bash
+for i in 1 2 3 4 5
+do
+  echo "Welcome $i times."
+done
+
+output
+--------
+Welcome 1 times
+Welcome 2 times
+Welcome 3 times
+Welcome 4 times.
+Welcome 5 times.
+
+
+example2: Script to print fruits list
+
+#!/bin/bash
+for fruit in mango apple kiwi orange 
+do
+ echo "I like $fruit."
+done
+
+output
+--------
+i like mango
+i like apple
+i like kiwi
+i like orange
+
+
+
+------------------------
+eg2_for loop:
+---------------
+script to print variable values  & create  directory for each value........
+
+#!/bin/bash
+set -x
+for dir_name in dir_1 dir_2 dir_3 dir_4
+do
+
+   echo " create directory for each tool in my_dir "
+   mkdir $dir_name
+   ls -lrt | tail -1
+   echo
+   echo
+   echo
+done
+echo " closing script execution........"
+
+-----------------------
+eg3_for loop:
+---------------
+script to print toolsstacks as variable values  & create  directory for each variable value........
+
++++++++++++++++++++++++++++++++++
+#!/bin/bash
+
+echo "Starting DevOps Tool Stack setup..."
+echo
+for TOOL in git jenkins docker k8s aws terraform
+do
+    echo "Currently learning tool: $TOOL"
+    mkdir "$TOOL"
+    echo "Directory for '$TOOL' created."
+    echo "------------------------------------"
+done
+
+echo
+echo "All directories created successfully!"
+
+
++++++++++++++++++++++++++++++++++
+
+assume we have 100  servers , we want to copy a file called as "hosts" to all 100 servers to path "/etc" 
+
+
+eg3 for loop :   to scp files to multiple servers
+-----------------------------------------------------
+#!/bin/bash
+set -x
+for servers_ip_address in { server1_ip, server2_ip, server3_ip, server4_ip , .. server100_ip }
+do
+   scp hosts ec2-user@$servers_ip_address:/etc/
+done
+ 
