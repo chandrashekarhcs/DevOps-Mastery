@@ -1,0 +1,637 @@
+Agenda
+--------
+- Git Rebase
+- Understanding difference between merge and rebase
+- How to selectively pickup commits from child branch
+- git stash
+- ssh-keys
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+Git Merge:
+=============
+Git merge is used to merge files of two different branches.
+
+git merge <branchName>
+
+
+GIT merge will arrange commits based on time 
+
+
+
+
+commit history after GIT MERGE: commit A , Commit B , commit C , COMMIT D , commit E , commit F
+commit history after GIT ReBase: commit A , Commit B, commit F , commit C , COMMIT D , commit E
+ 
+
+
+
+
+Git rebase
+==============
+rebase is nothing but a merge, but commit history will gets added on top of the branch.
+Rebase is also called as fastforward merge.
+The commits from the child branch are added to the top of the master branch.
+with rebase we can modify the commit history.
+
+
+
+Difference between git merge & git Rebase
+=========================================
+
+---------------------------------------------------------------------------------------------------------------------------------------|
+         Git Merge                                             |               Git Rebase                                                
+--------------------------------------------------------------------------------------------------------------------------------------- |
+                                                                                                                                                                       
+- commit history can not be modified in gitmerge               | - commit history will get modified in git Rebase    
+										                                                                                                                               
+- Commit history will be in linear format(based on time)       | - Commit history will be in Non-linear format (based on branch)        
+												                                                                                                                       |
+- Merge doesnt provide clean project history                   | - rebase provides cleaner project history                
+												                                                                                                                       |
+- Merge is simpler activity				                       | - Rebase is a little bit complex activity                   
+																					  																			  |
+----------------------------------------------------------------------------------------------------------------------------------------|
+
+
+
+
+Git cherry-pick:
+----------------
+Cherry pick used to choose a particular commit from one branch and apply it onto another.
+
+syntax:
+$ git  cherry-pick  <commitID>
+
+
+
+
+Git stash: 
+---------
+- Git stash command is used for leaving unfinished work.
+- git stash temporarily saves the changes you've made to your files which are not commited, so you can work on some other branch, and then come back and re-apply them later on
+- Stash works only on stagged files or non-commited files
+
+usecase: if we have unfinished work / non commited files, then we cant switch to another branch in this we need to use git stashing
+
+# To stash files
+  git stash
+
+# To bring back the satshed changes
+  git stash pop
+  
+
+
+
+
+
+
+Note:
+------
+
+INSTALL ==>  installing is activity, which we are doing for  very first time on fresh machine / server 
+
+UPDATE / UPGRADE ==> moving to next version of software
+
+ROLLBACK  ==> Going back to previous version of software
+
+
+eg:
+WhatsApp:
+--------
+
+ version1            version2                  version3             version4        version5     version6
+Messaging  =====> audioCalling feature =====> videocalling ======> Status ==========> UPI    ====> XYZ
+
+
+
+
+
+
+Git Reset: 
+----------
+git reset command is used to go to previous version of code
+git reset --hard <commitID>
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+SSH Key:
+--------
+SSH keys are a way to identify trusted computers without involving passwords. 
+ssh keys can be used as alternative to password based authentication.
+
+
+
+command to generate ssh key is 
+  ssh-keygen 
+  ==> press enter for 3 times
+  ==> Two files gets created
+    1. id_rsa     ==> private key (shouldnt be shared with anyone)
+	2. id_rsa.pub ==> public key  (can be shared with anyone)
+
+path of ssh keys generated
+----------------------------
+in windows ==> /c/users/<your_user>/.ssh/
+in linux   ==> /home/<your_user>/.ssh/ 
+   
+  
+
+ssh-key popular use cases:
+--------------------------
+1. logging in to ec2 instance without passwords using pem file
+2. You can generate an SSH key and add the public key to your GitHub account.
+3. you can set passwordless connection between servers
+
+
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Note:
+-----
+Git rebase demo & commands 
+
+
+
+mkdir project1
+
+cd project1/
+git init
+
+
+touch f1
+git add f1
+git commit -m "commit A"
+
+touch f2
+git add f2
+git commit -m "commit B"
+
+
+
+
+##creating a new branch
+git branch test
+
+## to checkout to new branch (i.e. test)
+git checkout test
+
+
+touch t1
+git add .
+git commit -m "commit C"
+
+touch t2
+git add .
+git commit -m "commit D"
+
+touch t3
+git add .
+git commit -m "commit E"
+
+git log --oneline
+
+#checking out to master again for new requirement in master branch
+git checkout master
+
+touch f3
+git add .
+git commit -m "commit F"
+
+git log --oneline
+
+
+
+
+######### Rebase ###########
+
+git checkout <childBranch> 
+git rebase master
+
+Note: rebase command should be executed on child branch only (i.e testbranch)
+
+
+######## git merge to complete rebasing feature ###########
+git checkout master
+git merge test
+
+
+**********************-----------------------------------Rebase Logs----------------------------------------**********************
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3
+$ git init
+Initialized empty Git repository in C:/Users/welcome/Desktop/Project3/.git/
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ touch f1
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f1
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   f1
+
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git commit -m "Commit A"
+[master (root-commit) f24dda1] Commit A
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f1
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ touch f2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git commit -m "Commit B"
+[master 611ccbe] Commit B
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git branch test
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git branch
+* master
+  test
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git checkout test
+Switched to branch 'test'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ touch t1
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git commit -m "Commit C"
+[test 56d0723] Commit C
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t1
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ touch t2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git commit -m "Commit D"
+[test 4c1ef8e] Commit D
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ touch t3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git commit -m "Commit E"
+[test f426d4d] Commit E
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git log --oneline
+f426d4d (HEAD -> test) Commit E
+4c1ef8e Commit D
+56d0723 Commit C
+611ccbe (master) Commit B
+f24dda1 Commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git checkout master
+Switched to branch 'master'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ ls -lrt
+total 0
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:31 f1
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:32 f2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git checkout test
+Switched to branch 'test'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ ll
+total 0
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:31 f1
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:32 f2
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:37 t1
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:37 t2
+-rw-r--r-- 1 welcome 197121 0 Jul 26 07:37 t3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git checkout master
+Switched to branch 'master'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ touch f3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git commit -m " Commit F"
+[master 1df2379]  Commit F
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git log --oneline
+1df2379 (HEAD -> master)  Commit F
+611ccbe Commit B
+f24dda1 Commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git checkout test
+Switched to branch 'test'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git rebase master
+Successfully rebased and updated refs/heads/test.
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (test)
+$ git checkout master
+Switched to branch 'master'
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git log --oneline
+1df2379 (HEAD -> master)  Commit F
+611ccbe Commit B
+f24dda1 Commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git merge test
+Updating 1df2379..1de3ba8
+Fast-forward
+ t1 | 0
+ t2 | 0
+ t3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 t1
+ create mode 100644 t2
+ create mode 100644 t3
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project3 (master)
+$ git log --oneline
+1de3ba8 (HEAD -> master, test) Commit E
+3f4e870 Commit D
+521eb6c Commit C
+1df2379  Commit F
+611ccbe Commit B
+f24dda1 Commit A
+
+
+
+**********************---------------------------------------------------------------------------**********************
+
+
+
+
+
+Git stash
+=========
+
+mkdir myproject1
+cd myproject1
+
+git init
+
+touch f1 f2
+git add .
+git commit -m "commit A"
+
+touch f3 f4
+git add .
+
+touch f5 f6
+
+git status (2 staged files, 2 untracked file)
+
+###stash
+
+git stash
+ls -lrth (see 4 files==> f1 f2 f5 & f6) f3 & f4 files are hidden
+
+git add .
+git commit -m "commit B"
+
+git status
+
+#####To bring back stashed files
+git stash pop
+
+
+*****************************------------------------  Git stash & git reset logs-------------------------------*****************************
+
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4
+$ git init
+Initialized empty Git repository in C:/Users/welcome/Desktop/Project4/.git/
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ touch f1 f2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git commit -m "commit A"
+[master (root-commit) e66a1e6] commit A
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f1
+ create mode 100644 f2
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ touch f3 f4
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   f3
+        new file:   f4
+
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ touch f5 f6
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   f3
+        new file:   f4
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f5
+        f6
+
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git stash
+Saved working directory and index state WIP on master: e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        f5
+        f6
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git add .
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git commit -m "commit B"
+[master b61da12] commit B
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f5
+ create mode 100644 f6
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git log --oneline
+b61da12 (HEAD -> master) commit B
+e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ ll
+total 0
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:02 f1
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:02 f2
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:04 f5
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:04 f6
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git stash pop
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   f3
+        new file:   f4
+
+Dropped refs/stash@{0} (34909438e53beb739f23670de7f05b189798b817)
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   f3
+        new file:   f4
+
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git commit -m "adding back stashed files..."
+[master aee843c] adding back stashed files...
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 f3
+ create mode 100644 f4
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git log --oneline
+aee843c (HEAD -> master) adding back stashed files...
+b61da12 commit B
+e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ ll
+total 0
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:02 f1
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:02 f2
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:07 f3
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:07 f4
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:04 f5
+-rw-r--r-- 1 welcome 197121 0 Jul 26 08:04 f6
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git log --oneline
+aee843c (HEAD -> master) adding back stashed files...
+b61da12 commit B
+e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git reset --hard b61da12
+HEAD is now at b61da12 commit B
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git log --oneline
+b61da12 (HEAD -> master) commit B
+e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ ls
+f1  f2  f5  f6
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git reset --hard e66a1e6
+HEAD is now at e66a1e6 commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$ git log --oneline
+e66a1e6 (HEAD -> master) commit A
+
+welcome@welcome-PC MINGW64 ~/Desktop/Project4 (master)
+$

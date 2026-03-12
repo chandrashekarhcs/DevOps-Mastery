@@ -1,0 +1,76 @@
+Branching
+--------------
+branching is used for parallel development
+two teams can work on same peice of code on two diffrent branches & 
+Later this code can be merged with master branch.
+
+Default branch of git is "Master"
+
+
+Developer
+----------------
+Home Page   --  file1  file2   file3   ===> master branch
+Services   --  file4  file5                ==>  <my_branch_2>
+Contact US  --  file6  file7   file8     ===>  <my_branch_3>
+personal banking - file10 file11 ==> new branch
+
+
+
+
++++++++++++++++++++++++++++++++++
+
+# to create a branch
+git branch  <branchname >
+
+# to list all branches
+git branch
+
+* ==> indicates your current branch
+
+# to checkout  to any branch
+git checkout <branchname>
+
+#to merge any branch
+git merge <branchname>
+
+note = be in your parent branch while merging
+
+#to delete a branch
+git branch -d <branchname>
+
+++++++++++++++
+
+
+
+Note
+------
+- as per git concept whenever you create a new branch, all previous commit history will also get copied on top of newly created branch
+- merge event will also create commit automatically...
+
+
+TAGS
+-------
+tag is a name given to version of files & directories
+it indicates milestone in a project,
+we can remember this very easily
+
+#syntax     
+git tag <tagName>
+
+#to check current tag / all tags
+git tag
+
+
+----------------------------------------------
+
+.gitignore
+-------------
+.gitignore file is used  to ignore the files from tracking in git
+
+add file names in which needs to be ignored in to  .gitignore file
+
+$ cat .gitignore
+*.log
+testfile
+
+

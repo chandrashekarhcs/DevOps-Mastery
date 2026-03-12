@@ -1,0 +1,199 @@
+Agenda
+---------------
+- What is Git
+- Types of Version Controlling
+- What is git bash?
+   git terminal == git in windows
+
+- Configure Git
+- Types of files
+- git init Observations
+- How to move files to staging area
+- How to know the status of the files
+- How to move file to local repository
+- How to see list of commits
+
+-------------------------------------------------------------------------------------------------------
+
+
+SCM (Source Code Management) Tools:
+-----------------------------------
+SCM tools help a software team to manage changes to source code over time.
+
+
+code: is another name of a programm
+source code:  programm files whic was written to develop an application.
+For almost all software projects, the source code is like the crown jewels - a precious asset whose value must be protected. 
+manage code ==> edit code, delete code, modify code & maintain code
+
+source code management tools is also called as Version control systems 
+
+
+
+
+Need of Version Control System?
+------------------------------------
+Version control systems are a category of software tools that helps in recording changes made to files by keeping a track of modifications done in the code.
+
+1) Maintaining multiple versions of code files manually is very complex activity. 
+2) Every change should be tracked like
+      - who did the change
+      - when he did the change 
+      - which changes he did etc
+   and all changes should be maintained. 
+3) Overwriting of the code should not be happen.
+4) Parallel development must be required
+	 
+
+
+
+
+
+Two types VCS /SCM Tools:
+-------------------------
+1) Centrailized Version controlling 
+2) Distributed Version controlling
+
+
+
+SCM Tools:
+-------------
+   -  Git (Most advanced tool)  
+   -  SVN
+   -  Perforce
+   -  Clearcase
+ 
+Git 
+----
+Git is an open source distributed Version controlling tool 
+Git is most widely used VCS/SCM tool in the world. 
+Git originally developed in 2005 by Linus Torvalds, the famous creator of the Linux operating system kernel. 
+
+
+
+
+How to install git?
+--------------------
+Command to check if its installed perviously in server:
+git --version
+
+to install git:
+yum install git    ===> Redhat /amazon linux machines
+apt install git    ===>  ubuntu machines
+
+
+
+Install git in Windows?
+-----------------------
+gitbash ==> git for windows
+
+
+
+to check where my file is currently?
+------------------------------------
+git status
+
+
+to check commit history
+git log
+
+
+
+
+$ git init
+
+
+git init ==  convert any directory ==> working directory (it will create .git directory)
+
+
+Git Configuration: 
+------------------
+Username & email configure needed for git ( only needed for first time)
+
+$ git config --global   user.name "bharathGowda"
+$ git config --global   user.email  "bharathgowda11@gmail.com"
+
+TO check the configurations
+$ git config  --global  --list
+
+
+
+Git architecture
+-----------------------
+There are three main components in git architecture
+1. Working directory ( Files will be called as ==> untracked files)
+2. Staging area      ( Files will be called as  ==> staged file )
+3. LocalRepository   ( Files will be called as  ==> commited file)
+
+
+workflow of git:
+-----------------
+working directory ------> staging area -------> LocalRepository
+(untracked files)        (staged file)         (commited file)
+
+
+after running git init in any folder/directory, all files will be in that directory will be in untracked files state,
+If we run git add command files will be moved to staging area, it‘s a intermediate area, where we can save the changes.
+next we will run git commit, then files will get moved to Local repository then we can track the file/code version changes.
+
+
+
+----------------------------------------------------------------------------------------------
+
+How to make working directory as git repository
+
+$ git init
+
+
+  git init command will convert any directory ==> git working directory
+
+
+-Observation -
+
+
+------------------------------------------------------------
+
+$  git status 
+
+   #to check where our files are currently in (working directory/staging area/LocalRepository)
+
+------------------------------------------------------------
+
+
+To move file from working directory to staging area:
+
+$ git  add  <filename>
+
+$ git  add   <filename2>  <filename3>
+
+$ git  add  .
+
+Note: . (dot) ==> refers to all files in pwd
+
+------------------------------------------------------------
+
+
+
+To move the files from staging area to LocalRepository
+
+$ git  commit  -m  "<commit message>"
+
+$ git status
+
+
+
+------------------------------------------------------------
+
+
+To see the list of commits history
+
+$ git log
+
+to see the commit history in single line format
+
+$ git log --oneline
+
+
+Note:
+HEAD ==> points to latest commit
+
