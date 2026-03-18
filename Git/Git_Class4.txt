@@ -1,0 +1,226 @@
+
+Git Reset
+-----------
+Git reset is used to undo the commited changes, but commit history will also gets removed
+
+Two important types of git reset are there
+
+1) soft reset:
+   soft reset is used to move files from local repo to staging area 
+   + commit history will also gets removed
+
+   syntax: git reset --soft <commit_ID>
+    
+  
+2) Hard reset:
+   hard reset will remove file from everywhere ( local repo , staging area & working directory )
+   + commit history will also gets removed
+   
+   syntax: git reset --hard <commit_ID>
+   
+
+
+
+
+Git revert
+----------
+Git revert is also used to undo the commited changes, but commit history will not get removed,
+we can track the reverted changes in the git log
+
+syntax:
+   git revert HEAD
+   
+Note: 
+
+git revert is used to rollback only ( go 1 step back- previous version of code)  
+   
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+Difference between Git Reset & Git Revert:
+---------------------------------------------
+
+both reset & revert are used to undo the commited changes
+
+Git reset:
+   1. if we use git reset commit history will get removed / deleted
+   2. Reset is destructive, as it will delete that commit & we cannot see the old commit
+   
+Git revert:
+   1. if we use git  revert commit history will not get removed / deleted
+   2. Revert is Non Desrtuctive, as it will create new commit each time.
+   
+
+
+
+
+
+Git Reset logs:
+===============
+
+mkdir project6
+cd project6
+
+git init
+
+
+touch file1 file2
+git add .
+git commit -m "first commit adding file1 file2 "
+
+
+touch file3 file4
+git add .
+git commit -m "second commit adding file3 file4 "
+
+git log --oneline 
+git status ==> (nothing to commit, working tree clean )
+
+git reset --soft <first_commitID>
+
+git log --oneline ==> ( you will only see first commit second commit got deleted from git log  )
+
+
+git status   ==> ( file3 & file4 will in staging area )
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+git revert logs:
+==================
+
+
+mkdir project7
+cd project7
+
+git init
+
+touch  file1 file2
+git add .
+git commit -m "first commit........"
+
+touch  file3 file4
+git add .
+git commit -m "second commit........"
+
+git log --oneline
+
+git revert HEAD    ## file3 file4 are deleted due to revert /rollback to last version
+
+
+
+
+********************************************************************************************************************
+
+WORKING WITH REMOTE REPOSITORIES:
+=================================
+
+
+
+Repository 
+----------
+repository ==> folder / location ==> where you can store your files
+
+
+Local Repository
+----------------
+repository which is there in your laptop/server
+
+
+Remote repository
+-----------------
+centralized location where all source code related to project will be kept
+
+remote repo service providers are ==> GitHub , BitBucket , Gitlab
+
+
+
+
+
+Git clone:
+==========
+git clone command is used to bring the remote repo to local workspace for the first time.
+
+Syntax:   git clone <url_of_repository>
+
+Git push:
+===========
+git push is used to push the changes from Local repository to Remote repository
+
+syntax:     git push
+
+
+
+Git pull:
+============
+git pull will bring the changes from remote repository & merges to local repository automatically
+
+syntax:     git pull
+
+-------------------------------------------------------------------------------------------------------
+
+
+
+How to connect to remote repo & push (upload) from our local repo
+===============================================================        
+
+Create repo in github & add ssh keys to github
+
+
+Note:
+----
+path of ssh keys generated:
+in windows ==> /c/users/<your_user>/.ssh/
+in linux   ==> /home/<your_user>/.ssh/ 
+
+
+
+How to Add SSH key / public key ( id_rsa.pub ) to GitHub ?
+==> Github-homepage --> click on your profile(top right corner)--> Click on Setting ---> SSH and GPG keys ---> New SSH key or Add SSH key ---> Provide the name/ Title for key -->paste the content of id_rsa.pub file copied --> Add SSH key field
+
+
+
+To start version controlling from a remote repository (GitHub):
+--------------------------------------------------------------
+
+generate ssh key & add it to github
+
+Steps1:
+-------
+create a new repository in github
+
+step2:
+------
+download this repository to my laptop for very first time
+
+to get url : go to your repository page in github, code==> ssh ==> copy the link
+
+command: git clone <url_of_repo_created>
+         git clone git@github.com:Bhrath/MyFirstRemoteRepository.git
+		 
+step3:
+------
+  after downloading, 
+  add your code files to local repository
+
+step4:
+-----
+  upload files in local repo to remote repository using git push
+  
+  git push
+  
+step5:
+------
+   clone the repo in EC2 server & again add few files & push the changes to remote repository
+
+step6:
+------
+  Pull the changes in your laptop using git pull....
+  keep on doing this cycle
+

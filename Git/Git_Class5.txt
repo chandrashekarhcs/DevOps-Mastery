@@ -1,0 +1,198 @@
+
+Note:
+------
+Remote repo === central repo ==> same
+
+Public repo ==> visble to everyone ==> you can clone / download my project 
+Private repo ==> visible to us & we can add anyone who needs access ==> companies 
+
+
+if we create repo ==> Gitbash ==> default branch is master
+if we create repo ==> Github ==> default branch is main
+
+To rename branch: git branch -m <old_branch_name> <new_branch_name>
+
+
+
+Git clone:
+==========
+git clone command is used to bring the remote repo to local workspace for the first time.
+
+Syntax    git clone <url_of_repository>
+
+cloning we can be done using two options:
+1. clone using https: we need to give my github credentials while pushing & pulling 
+2. clone using ssh: is highly recommended , it will use ssh keys so doesent ask for password 
+
+
+
+Git push:
+===========
+git push is used to push the changes from Local repository to Remote repository
+
+syntax:    git push
+
+
+Git pull:
+============
+git pull will bring the changes from remote repository & merges to local repository automatically
+
+
+
+Git fetch:
+===========
+git fetch will bring the changes from remote repository & stores it in seperate branch , we can review the changes if required we can merge.
+
+
+mathematically: git pull = git fetch + git merge
+
+
+
+Example:
+
+Create a new file in remote repo
+
+Next execute git fetch command in local repo
+
+
+After git fetch, compare your local branch with the remote:
+
+git log main..origin/main
+
+Then you can choose to bring in the changes using:
+
+git merge origin/main
+
+then list the files (Changes will merge to main branch)
+
+Merge conflict
+==============
+merging conflict will occur when the same peice of code is changed on two different branches & when we try to merge these two branches merge conflict occurs
+
+
+
+How do you fix merge conflicts?
+===============================
+1. I dont know what changes to keep , I will discuss with both developers about what content to keep, then we will decide what changes we need to keep & then i will proceed with merging
+2. we can use tools like Visual studio code, which can resolve merge conflicts.
+
+Merge example:
+
+Make sure You're on main and create a file:
+*********************************
+
+echo "Hello World" > hello.txt
+git add hello.txt
+git commit -m "Add hello.txt
+
+Create and switch to a new branch
+********************************
+git checkout -b samplebranch
+
+echo "Hello from samplebranch" > hello.txt
+git commit -am "Update hello.txt in samplebranch"
+
+Switch back to main and make a conflicting change
+*************************************************
+git checkout main
+echo "Hello from main branch" > hello.txt
+git commit -am "Update hello.txt in main branch"
+
+Try to merge samplebranch into main
+******************************
+git merge samplebranch
+
+git merge samplebranch
+Auto-merging hello.txt
+CONFLICT (content): Merge conflict in hello.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+Open hello.txt. You'll see something like this:
+***********************************************
+<<<<<<< HEAD
+Hello from main branch
+=======
+Hello from samplebranch
+>>>>>>> sample
+
+--------------------------------------------
+Edit the file to resolve the conflict, e.g.:
+
+Hello from both branches
+
+
+Then run:
+git add hello.txt
+git commit -m "Resolve merge conflict in hello.txt"
+-----------------------------------------------------
+
+
+Git Hooks:
+==========
+git hooks will impose some policies before & after commits.
+
+Pre commit hooks
+  git will execute these files prior to commiting
+
+Post commit hooks
+  git will execute these files after commiting is done
+
+path of hook files: .git/hooks/
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Maven:
+------
+
+Remote repo we will keep ==> source code of project
+
+source code =x=   customer
+
+we need to package source code ==> generate artifacts then deliver to customer
+
+
+build tools:
+---------------
+- build tools will build artifacts 
+- build tools will package your source code & generete artifacts
+
+what is artifact ?
+-------------------
+artifact is an final file (installable file) which we are going to deliver to customer
+
+example of artifacts 
+  - windows artifacts ==> .exe 
+  - android artifacts  ==> .apk
+  - java web applications <webapps>  artifacts ===> .jar   .war
+
+maven
+=======
+build tool used to build java application
+
+maven will take source code as input it will package source code & generate artifacts 
+
+steps involved in building an application is ?
+    build = compile + assemble + generate artifacts
+          ==> compile ==> it will convert sourcecode to machine readable format 
+		      assemble <linking> ==> it will group link your source code
+			  deliver <generate artifacts> ==> jar file / war file
+			  
+Other build tools for java appn
+------------------------------------------
+Ant , Maven , Gradle
+
+Java  generates 2 major types of application / artifacts
+----------------------------------------------------
+Jar   ==> java archives  
+             # jar file contains only java .class files
+war ==> web archives  
+             # war file contains == > ( javacode + html files +images)
+			 webapplications( websites ) are created using war files only.....
+			 
+			 
+Assigmnent:
+
+1.Difference between git pull & git fetch
