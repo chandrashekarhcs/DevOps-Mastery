@@ -1,0 +1,238 @@
+Maven:
+--------
+
+we need to package source code ==> generate artifacts then deliver to customer
+
+
+build tools:
+---------------
+- build tools will build artifacts 
+- build tools will package your source code & generate artifacts
+
+what is artifact ?
+-------------------
+artifact is final file (installable file) which we are going to deliver to customer/client 
+
+example of artifacts 
+  - windows artifacts ==> .exe 
+  - android artifacts  ==> .apk
+  - java web applications <webapps>  artifacts ===> .jar   .war
+
+maven:
+=======
+build tool used to build java application and Project Management Tool,  It also serves as a project management tool by managing project dependencies, handling releases, and generating project documentation.
+
+maven will take source code as input it will package source code & generate artifacts 
+
+steps involved in building an application is ?
+    build = compile + assemble + generate artifacts
+          ==> compile ==> it will convert sourcecode to machine readable format 
+		      assemble <linking> ==> it will group link your source code
+			  deliver <generate artifacts> ==> jar file / war file
+			  
+Other build tools for java appn:
+--------------------------------
+Ant , Maven , Gradle
+
+Java  generates 2 major types of application / artifacts
+----------------------------------------------------
+Jar   ==> java archives  
+             # jar file contains only java .class files
+war ==> web archives  
+             # war file contains == > ( javacode + html files + images)
+			 webapplications( websites ) are created using war files only.....
+			 
+ear ==> enterprise archives
+
+
+
+Project Object model (POM) 
+--------------------------
+pom.xml is the Default file / Main file of maven, which is used to build source code. ==> written by devlopers
+
+
+content of pom.xml file ==> 
+-------------------------
+ - where is your source code (source code location) ?  unit test case files , dependency libraries location, 
+ - repository informations (local & remote repo informations)
+ - what kind of artifacts we need to generate ==>  war / jar /ear 
+										  
+										  
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+maven commandS:
+ syntax=>  mvn <lifecycle_name>  <goal_name> 
+   
+   
+ Maven Lifecycle                                 
+ ------------                               ------------------
+ clean                                      clean ==>   it will delete previuos build files
+ site                                       site  ==>  it will create documents about source code  
+ 		
+ 
+                                            Maven Goals :
+											-------------
+ default                                    validate ==> it will validate your source code structure 
+                                            compile ==> it will compile your sourcecode
+                                            test        ==> it will run unit test cases
+                                            package ==> it will create package with build artifacts
+                                            install     ==> it will store build artifacts in local repository
+                                            deploy    ==>  it will store build artifacts in remote repository 									 
+									             
+
+
+   maven commands & thier use cases
+   mvn clean package   ==> it will  delete previuos build files & it will create package with build artifacts
+   mvn clean install       ==> it will  delete previuos build files & it will store build artifacts in local repository
+   mvn clean deploy      ==> it will  delete previuos build files & it will store build artifacts in remote repository
+
+
+Birth==>Baby===>teenage===>adult==>oldage===>death
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Repository in maven:
+====================
+ Repository in maven stands for location where we will keep all build artifacts
+
+remote repo to store sourcecode    is ==> github, bitbucket, gitlab, simillarly
+remote repo to store artifacts <jar file/ war file> ==> nexus, jfrog artifactory
+ 
+Three types repo in maven:
+--------------------------
+1. local repo:
+    folder in your server where maven is installed ==> .m2 folder  ( absolute path ==> /root/.m2 )
+    
+	command to save artifacts to local repo is 
+	mvn clean install
+Here is the location where you will find the artifacts saved to local repo /root/.m2/repository/com/mt
+2. central repo:
+    is used to download dependency for your application while building.
+
+3. remote repo:
+      its centralized location where we will keep our artifacts
+	
+	  command to save artifacts to remote repo is 
+	  mvn clean deploy
+
+    remote repositories to store artifactats ==> jfrog , Nexus 
+
+
+---------------------------------------------------------------------------------------
+---------JAVA & MAVEN Installation-----------------------------------------------------
+---------------------------------------------------------------------------------------
+
+
+to install , java is pre-requiste.
+
+
+Java Installation  in AMAZON-LINUX
+=====================================
+
+##Login as a root user
+sudo su -
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Maven Installation:
+===================
+
+Pre Requisite Software
+-----------------------------
+Java is the Pre - Requisite Software for Maven.
+
+Download and Add the Amazon Corretto 21 Repo
+
+sudo rpm --import https://yum.corretto.aws/corretto.key
+
+sudo curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+
+sudo dnf install java-21-amazon-corretto -y
+
+
+java -version
+
+
+
+
+Install Maven
+------------------
+Step1) Login as a root user and change the directory to /opt/
+
+sudo su -
+cd /opt/
+ 
+Step 2) Download the Maven Software
+go to maven official website:  https://maven.apache.org/download.cgi
+
+cd /opt
+
+run this: wget https://dlcdn.apache.org/maven/maven-3/3.9.14/binaries/apache-maven-3.9.14-bin.zip
+
+unzip apache-maven-3.9.14-bin.zip
+
+Step 3) Set the path/Environmental Variable for maven in /etc/profile file
+
+Run this: vi /etc/profile
+Add these at the bottom of the file
+
+  
+export M2_HOME=/opt/apache-maven-3.9.14
+export M2=$M2_HOME/bin
+export PATH=$PATH:$M2_HOME/bin
+    
+ 
+
+
+step 4) source updated file to apply env variables values 
+run this: source /etc/profile
+
+
+step 5) Check maven installation by running maven command
+run this: mvn --version
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Maven Project:
+--------------
+Github link: https://github.com/Acecloudacademy/maven-latest-repo.git
+
+git clone https://github.com/Acecloudacademy/maven-latest-repo.git
+
+cd maven-repo
+
+mvn clean package
+ 
+
+
+=======================================================
+If you want to make Maven accessible to the ec2-user, you can follow these steps:
+
+Set Up Environment Variables
+
+ vi .bashrc
+ 
+export M2_HOME=/opt/apache-maven-3.9.10
+export M2=$M2_HOME/bin
+export PATH=$PATH:$M2_HOME/bin
+
+source updated file to apply env variables values 
+
+[ec2-user@ip-172-31-15-130 ~]$ source ~/.bashrc
+
+validate
+compile
+test
+package
+install 
+deploy
+
+
+
