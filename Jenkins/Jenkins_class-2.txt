@@ -1,0 +1,201 @@
+Features of jenkins:
+--------------------
+
+- Whenever developers write code & pushes it to SCM, we integrate all that code of all developers at that point of time and we build, test and deliver/deploy to the client. This process is called CI & CD.
+- Jenkins helps in achieving this CI / CD process.
+- So in a day, there will be so many code change commits, pushes , builds, tests & deliveries/deployments.
+- So bugs will be reported fast and get rectified fast. So development happens fast.
+
+
+Other CI tools available in market:
+----------------------------------
+ GitLab, Circle CI , GitHub actions , Bamboo
+
+Jenkins workflow :
+------------------
+- We attach Git, Maven, Selenium & Artifactory plugin's to Jenkins.
+
+- as soon as Developers push code to GitHub, Jenkins pull that code instantly & sends that to Maven for build & maven will generate artifacts.
+
+- Once build is done artifacts are generated, Jenkins pull that built artifacts and send to Junit/selenium for testing
+
+- Once testing is done, then Jenkins will pull that build artifacts and send to artifactory to store artifacts.
+
+- then as per clients requirement, We can either handover artiafacts to client ====>> continiuos delivery
+                                                  (or) 
+- we will deploy those artifacts on client servers using Jenkins ====>> continiuos deployment
+
+
+
+Benefits of Continuous Integration:
+-----------------------------------
+- Since bugs will be reported fast and get rectified fast. So development happens fast.
+- Maintains history (Logs) for reference
+
+
+Jenkins Jobs:
+-------------
+sequence of tasks that user defines is called as job in jenkins
+
+What is Build in Jenkins:
+-------------------------
+running the job is called as build in jenkins
+
+
+Three types of jobs are created in jenkins:
+-----------------------------------------
+1. Freestyle job
+2. Maven Project
+3. Pipeline job
+
+1. Freestyle job:
+   - free style jobs are general type build jobs. using which we can execute linux command, run shell scripts
+   - used for mild customizations, such as we can combine any vcs with any build tools.
+
+2. Maven Project
+   - maven project are jobs which will run maven goals against pom.xml & generates artifacts (war/jar files).
+  
+3. Pipeline Jobs:
+   - pipeline jobs will run entire SDLC (software developement life cycle) as a code.
+  
+
+-----------------------------------------------------------------------------------------------------------------------
+Importnant note:
+----------------
+- Jenkins Homepage is also known as jenkins dashboard
+- In Jenkins, J0B == PROJECT == ITEM == ALL ARE SAME
+- In Jenkins, running a J0B is called as BUILD
+   while running job if job succeded ==> build is success
+                     if job failed ==> build is failed
+					 
+- Jenkins default home directory path ==> /var/lib/jenkins					
+- jenkins default port number is 8080
+------------------------------------------------------------------------------------------------------------------------
+
+**************Important Interview question*****************
+
+How to create a freestyle project step by step?
+==================================================
+- jenkinsdashboard --> create new item --> give_any_name & select Freestyleproject --> click OK --> confuration page will gets openend
+   Options in configure page:
+     1. general tab --> give descirption about your job/project
+	 
+     2. Source Code Management 
+	    in this section, we can select git option as we can use git a VCS, we can provide github repo url , branch name & credentials,
+		it will checkout source code from github to jenkins workspace.
+		
+     3. Build triggers
+	    in this section, we can trigger the job based on time / commit / once other jobs are built	        
+	    i. Build periodically ==> 
+		       it will trigger the job based on time, we can schedule jobs like crontab. 
+        ii.poll scm ==>
+		       it will trigger the job based on commit.
+		       jenkins will look after SCM periodically, if there are any new commits within specified time then it will trigger the job
+	    iii.Build after other projects are built ==>  
+		       we can trigger build only after other project/job is built.
+	 
+     4. Build step:
+	     it is the major step in freestyle project
+	     if we select execute shell ==> we can run any shell scripts & build related commands.
+	
+    5. Post-build Actions:
+	    these will get executed after build steps execution.
+		here we can  - run test cases
+                 	 - we can do deployments
+               		 - email build results.
+					 
+--------------------------------------------------------------------------------------------------------------------------------------------------				 
+
+Create a sample job / Project / item
+-------------------------------------------------
+
+create new item 
+
+give a name for your job
+
+select freestyle project & create
+
+your build configuratin page will open
+
+now go to build tab & select execute shell from dropdown menu
+
+In Command Box Enter echo " Hello Jenkins"
+
+Click on apply & save
+
+come to jenkins dashboard & click on build now
+
+Click on Console Output & observe logs
+
+--------------------------------------------------------------------
+Example:1
+*********
+echo " hi this my first Jenkins job"
+
+cd /var/lib/jenkins/
+touch file_sample1
+
+
+
+Example:2
+*********
+echo " hi this my first Jenkins job"
+
+touch file_sample2
+
+Note:
+*****
+  If you haven't specific path to create file, it will create file_sample2 file in Jenkins local under job directory workspace/<job/project/>/
+  
+  Ex:
+  /var/lib/jenkins/workspace/Sample-Project1
+
+
+Example:3
+*********
+Add script in Remote repo and configure url in SCM session.
+
+Make sure that Git is installed in Jenkins server, If not it will throw error while configuring git url.
+
+Once you configured Git url then execute script by using sh <script-name>
+
+Build step==>Execute shell==>sh script.sh
+
+#!/bin/bash
+
+git --version
+
+if [ $? -eq 0 ]; then
+    echo "git is installed"
+else
+    echo "git is not installed"
+fi
+
+====================
+Assignments:
+------------
+Jenkins:
+********
+list the Folder structure of Jenkins?
+Ex:
+workspace==?
+jobs==?
+plugins==?
+log===?
+nodes==?
+config.xml==?
+
+---------
+Maven:
+*****
+1.what is Settings.xml file in maven ?
+In Maven, the settings.xml file is an essential configuration file that allows you to customize various settings 
+for your Maven build environment. This file is typically located in the conf directory of your Maven installation, 
+under the Maven_Home directory. Additionally, you can also have a user-specific settings.xml file in the .m2 directory in your user's home directory, 
+allowing for individual user configuration.
+
+2.What is Pom.xml file in maven?
+In Maven, the pom.xml file is a Project Object Model (POM) file, and it is a fundamental part of a Maven project. The pom.xml file contains 
+configuration information for Maven to build the project, manage dependencies, and execute various tasks during the build lifecycle. 
+The POM file is typically located in the root directory of the project.
+

@@ -1,0 +1,126 @@
+Crontab
+*********
+MINUTE HOUR DOM MONTH DOW
+*/2      *   *    *    *    ---Run for every 2min
+*/5      *   *    *    *    ---Run for every 5min
+
+
+Jenkins home directory:
+========================
+The is the default Jenkins home directory in Linux -->  /var/lib/jenkins 
+
+Jenkins home directory contains the below sub directories and configuration files (.xml).
+
+- jobs
+  -- <JOBNAME> — :Sub directory for each job
+- workspace: this is the place where all source code will be checked out & build output will be stored
+- logs : it contains jenkins logs
+- plugins : This directory contains all the plugins that you have installed.
+- updates : This is an internal directory used by Jenkins to store information
+- users : it contains all users information's.
+
+
+How to install plugins in Jenkins?
+========================
+Jenkins dashboard --> manage jenkins --> manage plugins --> available tab --> <search for plugin> --> select plugin
+select install without restart
+
+plugin : maven integration
+-------------------------------------------------------------------------------------------------------------------------
+
+
+Tools (Older version of Jenkins its Global tool configuration):
+========================
+if we install any software in our jenkins server, we need to configure this in jenkins under Global tool configuration/tools, so that jenkins can start using that,
+
+Jenkins dashboard --> manage Jenkins -->tools configuration
+
+
+Note on configuring maven for jenkins:
+--------------------------------------
+Note: No need to install Java again in Jenkins server, Since Java is already installed in jenkins server.
+
+Make sure you installed Maven on your Jenkins server & also echo $M2_HOME ==> copy output path
+go to Jenkins dashboard --> manage Jenkins --> tool configurations --> maven --> expand --> name: <give_any_name> & path  paste ( output of echo $M2_HOME i.e /opt/apache-maven-3.9.9)
+
+
+
+How to create a maven project?
+------------------------------
+- make sure you have installed maven integration plugin is installed.
+  jenkinsdashboard --> create new item --> give_any_name & select maven-project --> click OK
+  maven-project confutation page will gets opened
+   in general tab --> add description about your job
+   in Source Code Management tab --> paste your GitHub repo url 
+   in build tab --> Goals and options --> clean package 
+  save & run & check console output for logs
+
+--------------------------------------------------------------------------------------------------------------------------
+
+Upstream & downstream jobs:
+===========================
+we have 2 JOBS job1 & job2, if Job 2 is dependent on Job 1, when I trigger Job 1 ==> once job 1 completes it should trigger job2 automatically
+here we can say JOB1 --> Upstream job  & Job2 --> Downstream job
+
+in job1 configuration page ==> post-build actions ==> build other projects ==> Job2
+
+now trigger job 1 & check for job2 to get triggered automatically after job1 is completed.
+
+----------------------------------------------------------------------------------------------------------------------
+
+Change name or hostname of any server?
+-------------------------------------------
+   syntax: sudo hostnamectl set-hostname <your_desired_name>
+   
+   after executing above command logout from server & login to apply the name changes 
+   
+    eg: to change / set my server name as jenkins_server
+   
+   
+   [ec2-user@ip-172-31-27-98 ~]$ sudo hostnamectl set-hostname jenkins_server
+   [ec2-user@ip-172-31-27-98 ~]$ logout
+   Connection to ec2-54-89-69-64.compute-1.amazonaws.com closed.
+ 
+    $ ssh -i "NewKeypair_V2.pem" ec2-user@ec2-54-89-69-64.compute-1.amazonaws.com
+    Last login: Thu Dec  8 05:13:36 2022 from 122.171.21.90
+    
+           __|  __|_  )
+           _|  (     /   Amazon Linux 2 AMI
+          ___|\___|___|
+    
+    https://aws.amazon.com/amazon-linux-2/
+    31 package(s) needed for security, out of 45 available
+    Run "sudo yum update" to apply all updates.
+    [ec2-user@jenkins_server ~]$
+	[ec2-user@jenkins_server ~]$
+	[ec2-user@jenkins_server ~]$
+	[ec2-user@jenkins_server ~]$
+
+----------------------------------------------------------- 
+Assignment1:
+-----------
+create 3 freestyle jobs as 1.build 2.test & 3.deploy in same order as Upstream & downstream jobs , just run echo statements in build section
+
+
+
+Assignment2:
+------------
+
+1. Run disk_utilization script as freestyle job with
+
+  - job needs to be triggered every 5 minutes using build triggers.
+
+
+2. Build the below source codes as maven projects
+
+-- https://github.com/jitpack/maven-simple
+
+-- https://github.com/jenkins-docs/simple-java-maven-app.git
+
+-- https://github.com/javaparser/javaparser-maven-sample
+
+
+
+
+
+

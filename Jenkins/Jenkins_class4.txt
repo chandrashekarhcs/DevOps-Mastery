@@ -1,0 +1,134 @@
+webhook in github:
+------------------
+why webhook?
+- in build triggers pollSCM , jenkins need to look for SCM for commits based on time period.
+  but with webhooks, if there's any small change is done for source code placed in github, Github-webhook will trigger the build automatically in jenkins.
+
+How to setup web-hooks?
+------------------------
+
+- step1) settings needs to done in github side:
+  create a repo --> settings --> webhooks --> create webhook(add Webhook)
+  Note: here for payload url means your jenkins ip address with portnumber also attach /github-webhook/ at the end of payload url
+       example: =  => Payloadurl: http://107.21.88.10:8080/github-webhook/
+  content type: application/json
+  ==> add webhook
+  
+- step1) settings in jenkins side
+  in configuration page of any job 
+   ==> git & add github repo url
+   ==> in buildtrigger section section ==> select==> GitHub hook trigger for GITScm polling
+   ==> give any commands in build section
+
+make any changes to code / Readme.MD file & commit ==> jenkins will automatically run this build without any manual intervention in jenkins side
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+master ==> owner who instructs
+Slave ==> someone who works on instructions provided by master
+ 
+
+Master & slave in jenkins
+------------------------------------
+master ==> jenkins master is server where we have installed jenkins.
+slave/worker ==> slave / agent is a server which will be connected to jenkins master, which follow instructions given by jenkins master &  jobs will get executed in slave / agent server.
+
+
+Why do we need to use master/slave setup ?
+------------------------------------------
+-  To reduce workloads on master server & distribute it to different servers.
+-  if we want to run specific job on specific server
+   eg: if we want to build maven project, we can use slave server which has maven installed in it
+
+
+Important  NOTE:
+---------------------------
+Dual meanings:
+    nodes == agent == slaves == workers ==> all are same terminologies
+
+
+
+==============Jenkins-Slave- Setup Practicals====================
+
+Step1): Launch Slave ec2-server and install java
+
+sudo dnf update
+           
+Download and Add the Amazon Corretto 21 Repo
+
+sudo rpm --import https://yum.corretto.aws/corretto.key
+
+sudo curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+
+sudo dnf install java-21-amazon-corretto -y
+
+
+
+Step2) :(in slave) Create a Jenkins user, set password, create jenkins path and x
+
+        useradd jenkins
+        
+        passwd jenkins
+        
+        mkdir /var/lib/jenkins
+        
+        chown  -R jenkins:jenkins   /var/lib/jenkins
+        
+        vim /etc/ssh/sshd_config
+        
+        PasswordAuthentication no to yes
+        
+        service  sshd restart
+
+
+#### Configurations needs to be done in JENKINS GUI #### 
+
+Step3):  Add the jenkins user name and password in jenkins Credentials section
+
+how to add credentials in jenkins?
+   Manage Jenkins==> Credentials ==> global ==> Add credentials
+   It will open credentials configuration page:
+         Kind==>username with password
+         Scope==>Global Username==> jenkins user name (created in slave server in step2)
+         Password==> password of Jenkins user (created in slave server in step2)
+
+
+Step4):   Add Node/Slave server in Jenkins Master  
+ 
+***********important_interview_question************
+
+How do you add slave in jenkins / steps involved in adding slave to jenkins ?
+-------------------------------------------------------------------------------
+
+Manage Jenkins==> Manage Nodes and Clouds==>New Node ==> provide Node name and select Permanent Agent and then click on create
+
+It will  open node configuration page
+
+             Name ==>Slave server name (can be any)
+             
+             Number of executors ==>The number of parallel jobs, which we can runs at a time
+             
+             Remote root directory ==>  directory path on slave server, where jobs gets executed
+             
+             Labels ==>give any name,
+			 ## labels will be used to control where we can run job  (it can be on master/slave) 
+             
+             Launch method ==> Launch agents via SSH Method
+             
+             Host ==> <private IP> of Slave server
+             
+             Credentials==> select the Jenkins credentials  created to access slave server
+             
+             Host Key Verification Strategy ==> Manually trusted key verification  startegy
+
+click on Save.
+
+
+
+How to Run job in slave?
+---------------------------------
+in configuration page of any jenkins job & under general section
+   select ==> Restrict where this project can be run  ==> labelname  ( give labelname of slave added)
+
+
