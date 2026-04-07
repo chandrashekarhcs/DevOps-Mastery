@@ -1,0 +1,198 @@
+Agenda :
+-----------
+• What are Servers?
+• Types of Servers
+• What are Virtual Machines?
+• Difference: Virtualization vs. Containerization
+• Installing Docker
+• Key Docker Terminologies
+• Creating Docker Containers
+• VM vs Container
+------------------------------------------------------------------------------------------
+Servers:
+-----------
+A server is just a high-performance computer that is used to provide services or share resources (like files, websites, databases) to other computers called clients over a network.
+
+
+Types of servers:
+-----------------
+1. Physical servers:
+--------------------
+- servers which is setup in your company, which we can see infront of us & which our company can manage. 
+- physical servers are on-site server that a company must manage and maintain individually inside the company location.
+
+   eg: Dataceneters in company
+   
+   Physical servers are also called as on-premise servers or data center servers.
+
+
+    disadvantages of Physical servers:
+    -----------------------------------
+    • cost of setting up Physical servers is very high
+    • maintainance:
+       24X7 Power Supply ==> keep servers under controlled environments.
+	   
+    • optimal usage:
+      most of hardware resource may go untilized
+      ex: if we have server with 32 GB RAM, 8cpus & 1000 GB HDD & if our application use a maximum of 20GB RAM, 4cpu's & 250 GB HDD remaining resources goes un-utilized     
+
+
+
+2. What are Virtual machines or Virtual  servers?
+   - hardware components / servers which you may not see infront of you, but still we can access those virtually
+     eg: servers provided by cloud providers like AWS (ec2 instances) , Azure , gcp
+
+
+Hypervisers:
+------------
+Using hypervisors software we can create Virtual machines.
+
+using hypervisors softwares Any bigger servers can be split into several smallers servers called as virtual machines & this process is known as server virtualization. 
+
+Where will Virtual machines get compute (hardware) respurces from?
+-----------------------------------------------------------------
+From host servers on which hypervisors software installed on
+
+eg of Hyperviser softwares: Microsoft Hyper-v , Orcale virtual box , VmWare EsX etc...
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+What are Virtual machines or Virtual  servers?
+----------------------------------------------
+- hardware components / servers which you cannot see infront of you, but still we can access those virtually
+   eg- ec2 instances, all cloud provided servers
+
+
+How VM Works?
+-------------
+
+A hypervisor (e.g., VMware ESXi, VirtualBox, Hyper-V) splits physical resources to create multiple virtual machines.
+
+Each VM runs its own OS and apps independently.
+
+What are drawbacks of Virtual machines?
+--------------------------------------
+- Resource-heavy: Each VM needs its own OS, consuming GBs of space.
+- In Virtualization we need fixed allocation of harware resources, which will reduce overall system performance.
+- If we use multiple Virtual machines then the system performance is low due to multiple guest OS overhead.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Note:
+=====
+1. interchangebale names or other names for a server
+    ------------------------------------------------------------------------
+    Servers ==computers== machines == virtual machines <vm> == nodes == slave ==instances ====> all are same
+
+2.  interchangebale names or other names of artifacts
+     --------------------------------------------------
+     artifacts== packages== binaries ==executables=====> all are same
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Docker
+========
+
+Docker is a containerization tool.
+-----------------------------------
+containers are like virtual machines
+Docker is a tool. It is used to create the containers
+
+what is Virtualization?
+-----------------------
+ process of creating VM's from host server is called as Virtualization
+ • in Virtualization we need to do Fixed allocation of harware resources.
+ • in Virtualization Guest OS will have more size (size will be in GB's)
+
+
+what is Containerization?
+--------------------------
+ process of creating containers from host server is called as Containerization
+ • in Containerization there is no concept of Fixed Hardware resources allocation. 
+ • in Containerization Guest OS will be very small in size (size will be in MB's).
+ 
+ 
+Why containers are lightweight? or why container OS (Guest OS) will be very small in size ?
+------------------------------------------------------------------------------------------
+Containers don’t need a full OS,
+Because containers share the kernel of the host machine using a concept called process isolation. So there is no need to have full OS.
+That’s why containers become very small in size (lightweight) and start very fast compared to Virtual Machines.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+How to install docker ?
+
+--  Create Ubuntu virtual Machine on AWS   
+     security group ==> inbound rules ==> All Traffic & anywhere
+     Connect using git bash
+     Go to Root Account
+
+     $ sudo  su -
+     
+     1.download shell script to install docker.
+        curl -fsSL https://get.docker.com -o get-docker.sh
+		
+     2.execute shell script to install docker.
+	   sh get-docker.sh  ( This will execute the shell script, which will install docker )
+     
+	 
+How to check the docker is installed or not?
+# docker --version
+
+
+We should be comformatable with three terms
+---------------------------------------------------------------
+
+1) Docker Images:
+
+- Docker Image is like a template or blueprint.
+- Docker Image  will contain everything needed to run an application — like code, libraries, and dependencies.
+- We use this image to create containers.
+
+
+
+2) Docker Containers:  
+  - Running instance of docker image is called as container.
+  - Container is nothing but a lightweight virtual machine, but faster and smaller.
+  - With the help of images container will run
+
+
+
+3) Docker Host:
+  - Machine on which docker is installed, is called as Docker host.
+  - This is where all your docker images and containers exists and run.
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+How to create a containers?
+==>creating container has two steps 
+   - step1: download docker image of our choice
+   - step2: run the downloaded docker image, it will create container from the downloaded image
+
+
+
+
+ex: create a container named as c1 from amazonlinux image
+     step1: download amazonlinux image:
+            syntax: docker pull <image_name>
+            command: docker pull amazonlinux
+     step2: run the downloaded amazonlinux image to create container with name as c1
+            syntax: docker run --name  <container_name> <image_name>
+            command: docker run --name c1 amazonlinux
+
+
+ASSIGNMENT
+-----------------------
+***********Important_Interview_Question****************************
+- what is the Difference between virtual machines & a containers ?
