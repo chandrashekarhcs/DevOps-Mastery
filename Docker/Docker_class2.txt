@@ -211,7 +211,8 @@ Scenario 3: Start a container centos_container along with downloanding image sim
 To start centos as container, if centos image ifnot downloaded earlier, then docker will pull that from dockerHub immediately & it will start container
 
 
-# docker run --name centos_container  -it  centos
+# docker run --name centos_container  -it centos:centos7.9.2009
+
 
 
 #  exit  ( To come back to dockerhost )
