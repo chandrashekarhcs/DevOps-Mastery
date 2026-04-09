@@ -1,0 +1,159 @@
+what are artifacts?
+-------------------
+We cannot directly use any code written in any programming languages directly, so we have to convert those into machine understable format called as artifacts.
+
+
+ex: git (gitbash software for windows) is written(developed) using c/c++ language
+	jenkins software is written(developed) using java language
+    docker software  is written(developed) using golang language
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Note:
+----
+1. what are other programming languages used ?
+   Java, python, node js .
+
+2. what all build tools available for java?
+  Java supports both Maven (or) Gradle   
+
+3. For Nodejs build tool is npm & artifacts name will be like package.json    
+
+we will work on java based applications with Maven as build tool
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+CI- CD PROCESS:
+---------------
+<< DIAGRAM >>
+
+CODE:
+-----
+Here developers need to write code to develop web applications. 
+once developers done with writing code, code it will be committed using VCS like GIT 
+& code gets pushed to centralized/Remote repos like GitHUb.
+
+BUILD:
+-------
+ Let’s consider your code is written in java, it needs to be build before usage.
+ In this build step code gets compiled artifacts (jar or war file) get generated 
+ For build purpose we will use maven
+
+UNIT TEST:
+----------
+ If the build step is completed, then move to testing phase in this step unit test will be done.
+ - unit test are simpler CODE LEVEL TESTING to test correctness of individual units of code.
+ - unit testing will be done by developers.
+ - Junit tool can be used for unit testing.
+ - if unit test is passed then we can push build artifacts to artifactory
+ - if unit test is failed then developers will get feedback & then they will fix the code & again cycle begins from start.
+
+
+ARTIFACTORY:
+-----------
+
+- Artifactory is place where we can store our build artifacts (like github for storing code), so that in future we may use/share again.
+- JFROG / NEXUS are most used artifactory tools in industry
+
+
+
+DEPLOY:
+-------
+- In this step, you can deploy(install) our application(war file). 
+- Here, you can see your application output
+- optionally, we can deploy our application to different environments & do different types of testing.
+
+Note:
+environments means group of servers(will be discussed later).
+
+AUTOMATED TESTING:
+-----------------
+- after deploying, we will do complete testing of application using Automatedtesting tools.
+- Testing team (or QA Team) will use tools like selenium  to test
+- Testing will be done using scripts given by testing team .
+- overall it is APPLICATION LEVEL TESTING
+
+
+if automated test results are good, then  we can deploy in PRODUCTION ENVIRONMENT 
+
+DEPLOY TO PRODUCTION ((LIVE ENVIRONMENT)):
+---------------------
+ If all results in AutoMated Testing are ok, then we can deploy your code in production servers. (by taking all approvals)
+ 
+MONITOR:
+--------
+  After deploying to prod we have to monitor(observe) the applications performance so that end users dont face any issue while accesing applications.
+
+Note:
+-----
+Deploy to production will not be done automatically. 
+  
+
+Earlier above mentioned stages was done seperately, now with tools like jenkins we can automate or execute all stages AUTOMATICALLY. 
+
+Because of Jenkins, If we have any error / malfunction is found in our code, it will be reported fast to developers and get rectified so entire development is fast.
+
+Here, Overall SDLC will be automatic using Jenkins
+
+
+
+
+what is jenkins?
+---------------
+- Jenkins is a open source CI -CD tool written in java. 
+- The leading open source auttomation tool will do all points mentioned in the diagram
+- Jenkins provides hundreds of plugins to support building, deploying and automating any project.
+- If we want to use continuous integration first choice is jenkins.
+- It consists of plugins. Through plugins we can do whatever we want, without plugins we can’t run anything in jenkins
+- It is used to detect the faults in the software development.
+- It automates the code whenever developer commits
+- It was originally developed by SUN Microsystem in 2004 as HUDSON
+- HUDSON was an enterprise edition( i,e it was not open source project earlier),  it was paid tool.
+- The project was renamed jenkins when oracle brought the microsystems.
+- Jenkins default port number is 8080
+
+
+What is CI-CD?
+--------------
+- Whenever developers write code pushes code to VCS (Github/gitlab/bitbucket), we integrate all the code of all developers at any point of time and we build, test and deliver/deploy it to the client.
+ This process is called CI/CD
+
+advantages of CI-CD:
+--------------------
+ With CI-CD, If we have any issue in our code, it will be reported fast to developers, so that they can rectify the issues, so entire SDLC lifecycle will be very fast.
+
+
+
+Why only Jenkins?
+================
+- It has so many plug-ins. You can write your own plug-in.
+- We can attach slave servers to Jenkins master.
+- It instructs others (slaves) to do Job. If slaves are not available, Jenkins itself does the job.
+- Jenkins also works like crontab, i.e it can schedules scripts to run at any time as we need.
+
+
+
+Key Terminologies in CI - CD :
+==============================
+
+- Integrate: Combine all code written by developers till some point of time
+
+- Build: Take the source code and generate artifacts (war files)
+
+- Test: Run test scripts given by testing teams to check whether application is working properly or not.
+
+- Artifactory: artifactory is a place where we keep our build artifacts (war file), so that in future we may use/deliver again.
+    
+	Jfrog / nexus are most used artifactory tools in industry
+
+- Deliver : Handing over the product (aritifact i. e war file ) to Client.
+
+- Deploy: Installing product (aritifact i.e war file ) in client’s servers.
+
+===================================================================================
+
+
+
+

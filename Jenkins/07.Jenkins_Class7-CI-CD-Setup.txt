@@ -1,0 +1,73 @@
+Acecloudacademy Project(CI/CD Setup)
+==================================
+1.Jenkins Master
+2.Jenkins Slave
+3.Tomcat Server
+
+====================================================== 
+1.Jenkins Master===(installed java, git and jenkins)===(SSH Agent Plugin, Publish over SSH, Pipeline stage view plugin)===Tools config (maven installed path)
+
+2.Slave server==job will going to execute===(git, java, maven)---> use same class notes to configure the slave machine
+
+Note: Install java-17 in slave machine.
+
+3.Tomcat server(Web application server-site)===(java, tomcat)===depends on applications users access
+
+NOTE:
+Install Java-17 in tomcat server
+
+sudo dnf install java-17 -y
+
+java -version
+
+
+------------------------------------------------------------
+#Change the ownership of tomcat9 dir to ec2-user
+[root@ip-172-31-9-163 tomcat9]# chown -R ec2-user:ec2-user /opt/tomcat9/
+
+=============================================================
+
+GitHub Link:https://github.com/Acecloudacademy/maven-repo.git
+
+
+git clone  https://github.com/Acecloudacademy/maven-repo.git
+  
+
+checkout scm
+
+==============================================================
+pipeline {
+    // add your slave label name
+    agent { label 'slave_node'}
+    tools{
+        maven 'maven-test'
+    }
+
+    stages {
+        stage ('Checkout_SCM') {
+
+            steps {
+          	    
+	     checkout scm
+            }
+        }
+
+        stage ('Maven_Build') {
+
+            steps {
+               sh 'mvn clean package'rg
+            }
+        }
+        
+        stage ('Deploy_Tomcat') {
+
+            steps {
+	      sshagent(['tomcat-web-server']) {
+              sh "scp -o StrictHostKeyChecking=no  target/maven-web-application.war  ec2-user@65.2.123.118:/opt/tomcat9/webapps"
+	      }
+         }
+        }
+        
+    }
+}
+

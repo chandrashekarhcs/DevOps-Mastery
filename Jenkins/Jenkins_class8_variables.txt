@@ -1,0 +1,192 @@
+What are Environment Variables in Jenkins?
+------------------------------------------
+Environment variables are global key-value pairs that Jenkins can access and inject into a project. By using Jenkins environment variables, you can avoid duplicating the same values in each project.
+
+Other benefits of using Jenkins environment variables include enhanced security. Jenkins can utilize security credentials as variables, ensuring that sensitive or user-generated data is kept out of the project code.
+
+To see a list of Jenkins environmental variables in a web browser, navigate to the following address:
+http://52.91.15.184:8080/env-vars.html/
+
+
+Jenkins environmental variables
+*******************************
+pipeline {
+    agent any
+    stages {
+        stage("Env Variables") {
+            steps {
+                echo "The current build number is ${env.BUILD_NUMBER}"
+                echo "Another method is to use \${BUILD_NUMBER}, which is ${BUILD_NUMBER}"
+            }
+        }
+    }
+}
+
+
+
+pipeline {
+    agent any
+    stages {
+        stage("Env Variables") {
+            steps {
+                echo "Home path of Jenkins is ${env.JENKINS_HOME}"
+                echo "Default home path is \${JENKINS_HOME}, which is ${JENKINS_HOME}"
+            }
+        }
+    }
+}
+
+
+
+Injecting Global Variables:
+*****************************
+Using Global Environment Variables:
+
+Navigate to Jenkins Dashboard > Manage Jenkins > System.
+Scroll down to the "Global properties" section.
+Check "Environment variables" and define your global variables in the format KEY=Value.
+Save the configuration.
+Accessing Global Variables in Pipeline:
+
+Global variables defined in Jenkins configurations are automatically available in pipeline scripts using the env object.
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('env Stage') {
+            steps {
+                script {
+                    def globalVariable = env.GLOBAL_VARIABLE_NAME
+                    echo "Value of GLOBAL_VARIABLE_NAME: ${globalVariable}"
+                }
+            }
+        }
+    }
+}
+
+
+key -->Sportsman
+value-->virat
+
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('env Stage') {
+            steps {
+                script {
+                    def globalVariable = env.Sportsman
+                    echo "Value of Sportsman: ${globalVariable}"
+                }
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('env Stage') {
+            steps {
+                script {
+                    def globalVariable = env.Actor
+                    echo "Value of Actor: ${globalVariable}"
+                }
+            }
+        }
+    }
+}
+
+Injecting Local Variables:
+*************************
+Using Local Environment Variables:
+You can define local variables within the pipeline script using environment blocks.
+Use the environment directive to define local variables in each stage or at the top level of the pipeline.
+
+Ex:1
+pipeline {
+    agent any
+    
+    environment {
+        LOCAL_VARIABLE_NAME = 'local_value'
+    }
+    
+    stages {
+        stage('Example Stage') {
+            steps {
+                script {
+                    echo "Value of LOCAL_VARIABLE_NAME: ${LOCAL_VARIABLE_NAME}"
+                }
+            }
+        }
+    }
+}
+
+Ex:2
+*****
+pipeline {
+    agent any
+    
+    environment {
+        MY_USER = 'DevOps_admin'
+    }
+    
+    stages {
+        stage('Example Stage') {
+            steps {
+                script {
+                    echo "Value of MY_USER: ${MY_USER}"
+                }
+            }
+        }
+    }
+}
+
+Ex3:
+
+pipeline {
+    agent any
+    environment {
+        DATE = "Feb 12th"
+    }
+    stages {
+        stage("Env Variables") {
+            environment {
+                NAME = "Ravi"
+            }
+            steps {
+                echo "Today is ${env.DATE}"
+                echo "My name ${env.NAME}"
+                script {
+                    WEBSITE = "acecloudacademy"
+                }
+                echo "This is an example for ${WEBSITE}"
+                
+            }
+        }
+    }
+}
+
+In this example, we are setting the DATE and NAME environment variables declaratively. DATE is at the top of the pipeline and can be used in every stage, while NAME is in the "Env Variables" stage, so we can only use it within that stage. The WEBSITE variable is set imperatively. 
+
+================================================================
+
+scripted pipeline  
+---------------
+
+node('slave-name') {
+    stage('build') {
+        echo "Running Build"
+    }
+
+    stage('test') {
+        echo "Running test"
+    }
+
+    stage('deploy') {
+        echo "Running deploy"
+    }
+}

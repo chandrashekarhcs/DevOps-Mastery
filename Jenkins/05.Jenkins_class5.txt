@@ -1,0 +1,250 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                     Pipeline job
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+Note on Pipeline:
+----------------
+eg: 
+      SDLC flow ==>   sourcecode ==> build     ==>  unit test     ==>  deploy ==> automated test
+                         stage1  ==> stage2    ==>  stage3       ==>  stage4 ==>  stage5
+  
+Jenkins Pipeline:
+-----------------
+- pipeline is another type of jenkins job, which contains series of stages executed in sequence to create CI-CD flow.
+- Pipeline jobs are more flexible than freestyle jobs
+
+Pipeline job/Project:
+---------------------
+• Another way of creating job, here configuration will be done with help of code called as pipline scripts.
+• Pipeline scripts are written in groovy DSL language.
+
+
+Advantages of pipeline Job:
+---------------------------
+• we can divide the job into many parts called as stages (eg: build stage /test stage /deploy stage/..) & each stage can run in different agents (slave).
+• we can run stages in parallell.
+• we can retrigger job from failed stage.
+• visualize the build flow.
+• Build can wait for user input(specific user can enter).
+
+
+Types of Pipeline jobs / projects :
+-----------------------------------
+in pipeline project, we can write piplinescript /groovy code in two types
+  
+  1. Declarative: 
+  2. Scripted:
+
+
+Declarative pipline scripts:
+----------------------------
+- simple & felxible than scripted pipline.
+- pipleine script file is also called by the name Jenkinsfile
+- we can put this jenkinsfile into scm, to track changes
+- we can generate scripts from jenkins UI using pipeline syntax option.
+
+
+Keywords in Declarative pipeline scripts:
+-----------------------------------------
+
+- Pipeline directive:
+  -------------------
+  • pipleine keyword indicates that script is declarative script.
+   
+      pipeline {
+      }
+   
+- Agent directive:
+  ----------------
+  • agent directive indicates in which server we want to run our entire pipeline script 
+    (agent could be jenkins master/slave/ docker containers..)
+
+    agent any ==> indicates this job can be run anywhere ( i.e on master or any slave)
+
+- Stages directive:
+  -----------------
+  • contains sequence of stage's , atleast one stage has to be there under stages.
+  • stages just says "below are my stages"
+
+- Stage directive:
+  ----------------
+  • we need to write stage inside stages directive.
+  • we need to give name for stage of our job (build stage/test stage/deploy stage/...etc) 
+  • stage name given will be display on the jenkins pipeline dashboard
+
+   stage('<stage_name>'){
+   }
+
+- Steps:
+  ------
+  • We need to write steps inside the stage directive.
+  • all commands /scripts used to build the pipelinejob has to defined here.
+
+   steps{
+     echo "running this job....."
+   }
+   
+
+
+------------------------------------------------------------------------------------------------------------------
+
+What is the difference between Declarative and scripted pipeline ?
+-----------------------------------------------------------------
+Both  Declarative and scripted pipeline are written in groovy DSL, they majorly differ only in syntax and flexibility.
+
+________________________________________________________________________________________________________
+   scripted pipeline                                   |     Declarative pipeline                       |
+_______________________________________________________|________________________________________________|
+-  First & Old feature                                    - Latest & advanced feature
+-  complex groovy syntax                                  - simpler & easily understandble groovy syntax
+-  dosenot support restarting job from failed stage       - supports restarting job from failed stage
+-  More flexible & powerful                               - less flexible
+-  code is defined inside "node" block                    - code is defined inside "Pipeline" block
+-  doesnot support blue ocean plugin                      - supports blue ocean plugin
+-  syntax:                                                - syntax:											   
+
+    node {                                                   pipeline{
+    stage('Build') {                                            agent any
+        <build_commands>                                        stages {
+      }                                                           stage('<stage_name>)'{   
+    }                                                               steps{
+                                                                      <commands>
+                                                                 }													 
+                                                                }
+                                                              }
+                                                             } 
+
+____________________________________________________________________________________________
+
+
+Sample declarative pipeline scripts:
+====================================
+
+ex1: write a pipeline script with 1 stage called first_stage  & print any statement using echo
+----------------------------------------------------------------------------------------------
+
+pipeline{
+    agent any
+    stages{
+      stage('first_stage'){
+        steps{
+            echo "running my first pipeline script....."
+        }
+      }
+    }
+}
+
+ex2: write a pipeline script with 3 stages build , test & deploy & run echo commands in all 3 stages.
+-----------------------------------------------------------------------------------------------------
+
+pipeline{
+    agent any
+    stages{
+        stage('build'){
+            steps{
+               echo "running build stage........." 
+            }
+        }
+        stage('test'){
+            steps{
+                echo "runnning test stage......."
+            }
+        }
+        stage('deploy'){
+            steps{
+                echo "running deploy which is final stage....."
+            }
+        }
+        
+    }
+}
+
+ex3: write a pipeline script with 1 stage & clone a git repo ( eleven devops maven repo).
+-------------------------------------------------------------------------------------------------
+
+pipeline{
+    agent any
+    stages{
+        stage('clone_repo'){
+            steps{
+                git branch: 'master', url: 'https://github.com/jitpack/maven-simple'
+            }
+        }
+    }
+}
+
+
+ Note: 
+ -----
+ How to generate groovy commands syntax from jenkins GUI?
+ go to configure section of any pipeline job created ===> scroll down to pipeline section --> pipeline syntax( it will open new tab) --> steps --> sample step --> select from drop down ==> git: Git ==> give git repository url & branch --> generate pipeline script ==> copy the output generated & add that in steps section <as shown in above script>
+
+=========================================================================
+To run a pipeline script on different Jenkins slave machines
+
+pipeline {
+    agent any
+    stages {
+        stage('Build on jenkins_slave1') {
+            agent {
+                label 'slave_server_1'                       
+            }
+            steps {
+                echo "running build on jenkins slave 1"
+            }
+        }
+        stage('Test on jenkins_slave1') {
+            agent {
+                label 'slave_server_1'
+            }
+            steps {
+                echo "running test on jenkins slave 1"
+            }
+        }
+    }
+}
+
+
+To rerun only the failed stage of a Jenkins pipeline job
+********************************************************
+pipeline{
+    agent any
+    stages{
+        stage('build'){
+            steps{
+               echo "running build stage........." 
+            }
+        }
+        stage('test'){
+		    when {
+                expression { currentBuild.result == 'FAILURE' }
+            }
+            steps{
+                echo "runnning test stage......."
+            }
+        }
+        stage('deploy'){
+            steps{
+                echo "running deploy which is final stage....."
+            }
+        }
+        
+    }
+}
+
+
+Assignments:
+------------
+1.Create a slave & run any maven project in slave
+
+2.Clone the below source codes as pipeline jobs / projects:
+---------------------------------------------------------
+
+-- https://github.com/jitpack/maven-simple
+
+-- https://github.com/jenkins-docs/simple-java-maven-app.git
+
+-- https://github.com/javaparser/javaparser-maven-sample
+
+===================================================

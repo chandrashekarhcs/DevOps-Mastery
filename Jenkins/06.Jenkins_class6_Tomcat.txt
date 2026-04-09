@@ -1,0 +1,175 @@
+================================================================
+
+Tomcat:
+------------
+
+Note:
+-----
+- SourceCode ==> build sourcecode ==> generate artifacts <JAR/WAR/EAR>  files ==>  deploy artifacts ==> jar/war files 
+
+- Deploy ==> installing some package/artifacts
+
+- artifacts types in java 
+     JAR ==> java archives==> contains only java files
+     WAR ==> contains ==>java code + html files + images
+
+- websites are generally called as web applications.
+
+- web application are generally built by deploying(installing) artifacts such as war files
+
+- How to deploy/run jar file ?
+  ==>by using java command we can deploy jar files
+     syntax  -->  java -jar <jarfilename>
+
+- How to deploy war files ?
+  ==>  to deploy war files we have to use tools called as Web Application Servers.
+
+- Web Application Servers ==> tools which are available in market ==> Tomcat / Jboss / weblogic 
+
+=====================================================================================================
+                                        *****Tomcat*****
+=====================================================================================================
+Pre-req ---> Java-->Tomcat-->Maven-->Git 
+
+
+Tomcat
+-----------
+is an opensource, java based  web application server tool used to deploy artifacts 
+default port of tomcat is 8080
+java is pre-requisite for tomcat
+
+====Tomcat Installation & setup=====
+
+launch a new ec2 instance (Note: update ec2 instance security group inbound rules to all atraffic & anywhere)
+
+
+Step1): Install Java on ec2 instance
+         yum install java-11
+
+Step2) :  Download tomcat from https://tomcat.apache.org/ site
+      i.  download tomcat application package & extract zip file
+           sudo su -
+           cd /opt/
+          wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
+		   
+		  
+           tar -xvf apache-tomcat-9.0.98.tar.gz
+		   
+      ii. rename apache-directory for simple understanding
+          mv apache-tomcat-9.0.98 tomcat9
+      
+      iii. set CATALINA_HOME environment variable
+             Before starting the Tomcat Service, configure a CATALINA_HOME environment variable in your system using the following commands.
+			 
+             echo "export CATALINA_HOME="/opt/tomcat9"" >> ~/.bashrc
+             source ~/.bashrc
+      
+       iv. start the tomcat web application server using the scripts provided in tomcat  bin directory .
+           cd /opt/tomcat9/bin 
+           ./startup.sh 
+
+Step3): Acess Tomcat from browser:
+      Open tomcat GUI http://<PubliCip>:8080
+      click on manager app 
+	  [ you will get access denied, to resolve this enable remote access to the Manager app ]
+      go to below xml file & at last part of the file comment these lines as shown below
+      
+      vi /opt/tomcat9/webapps/manager/META-INF/context.xml
+      
+      ##Comment the below three lines .(in xml files comment is done with starts with <!-- and ends with --> )
+      
+      <!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+                allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1 | 192.168.0.*"/> -->
+
+
+Step4):  By default Tomcat doesn't add any users, we need to configure/add users.
+         to add users to tomcat ==> tomcat-users.xml   
+		 file located under /opt/tomcat9/conf directory and add  just below (<tomcat-users> section.
+ 
+vi /opt/tomcat9/conf/tomcat-users.xml 
+     
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>   
+<user username="admin" password="admin" roles="manager-gui,manager-script,manager-jmx,manager-status"/>
+<user username="deployer" password="deployer" roles="manager-script"/>
+<user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+
+Note: Stop and start the tomcat server
+**************************************
+cd /opt/tomcat9/bin 
+./shutdown.sh
+./startup.sh 
+
+
+Step5: Access Apache Tomcat Web Interface :
+------------------------------------------
+
+http://<public_IP>:8080/
+
+Click on managerapp ==> you see login page ==> username ==> admin & password ==> admin 
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+Important files & Directory structure in tomcat : 
+-------------------------------------------------
+The typical directory hierarchy of a Tomcat installation consists of the following:
+
+bin :
+    bin directoryt contains startup, shutdown and other scripts  
+     startup.sh --> script to start tomcat
+	 shutdown.sh --> script to stop tomcat
+	 
+conf:
+    Conf directory contains All configuration files of tomcat.
+	eg:
+    -- server.xml ==> file ==> where we can configure tomcat to change port number etc.
+	-- tomcat-users.xml ==> file ==> where we can add users to tomcat.
+
+webapps:
+    webapps directory contains the web applications 
+    --> where we will copy our war file
+
+logs 
+    logs directory contains
+    --> all logs related to tomcat.
+	--> all logs about deployed web application will be stored here.
+
+
+
+
+Assignment:
+
+
+Steps to deploy Acecloudacademy web application / project?
+-------------------------------------------------------
+
+1. clone source code of Acecloudacademy project
+      git clone https://github.com/Acecloudacademy/maven-repo.git
+
+2. cd maven-repo.git
+
+3. build source code to generate artifact / war file.
+    mvn clean package
+
+4. copy the generated war file to webapps directory inside tomcat installation deirectory
+    cp <war_file> /opt/tomcat9/webapps/
+	cp maven-web-application.war /opt/tomcat9/webapps/
+	
+    sudo cp maven-web-application.war /opt/tomcat9/webapps/
+	
+	
+5. stop running tomcat & start tomcat 	
+    sh /opt/tomcat9/bin/shutdown.sh --> script to stop tomcat
+	sh /opt/tomcat9/bin/startup.sh --> script to start tomcat
+
+6. access webapplication / website using
+   http://<public_IP>:8080/<warfilename>
+   
+   http://107.21.159.218:8080/maven-web-application/
+   
