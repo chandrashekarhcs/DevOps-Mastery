@@ -1,0 +1,82 @@
+GitHub Repos(Remote Repo/Central Repo)
+Two types of Repos:
+1.Public Repository: Visible to everyone on the internet; anyone can view and clone it.
+2.Private Repository: Restricted to specific users or teams; only authorized users can view and clone it.
+
+-----------------------------------------------------------
+
+README.md 
+-----------------
+You can add a README file to your repository to tell other people why your project is useful, what they can do with your project, and how they can use it.
+
+
+A README is often the first item a visitor will see when visiting your repository. README files typically include information on:
+1.What the project does
+2.Why the project is useful
+3.How users can get started with the project
+4.Where users can get help with your project
+5.Who maintains and contributes to the project
+
+example-repos:
+https://github.com/git/git
+https://github.com/torvalds/linux?tab=readme-ov-file
+
+----------------------------------------
+
+Git Amend
+================
+git commit --amend is used to modify the most recent commit
+
+One of the simplest things you can do with --amend is to edit a commit message
+
+Example:
+
+mkdir git-repo
+cd git-repo
+git init
+echo "# Project Title" > README.md
+git add README.md
+git commit -m "Adding plines to reddme"
+
+Note: the commit message is full of spelling errors. Let's amend that:
+
+git commit --amend -m "Added lines to README.md"
+
+
+----------------------------------------------------------------------------
+Merge conflict
+==============
+Merging conflict will occur when the same piece  of code is changed on two different branches & when we try to merge these two branches merge conflict occurs
+
+
+How do you fix merge conflicts?
+===============================
+1. I don't know what changes to keep , I will discuss with both developers about what content to keep, then we will decide what changes we need to keep & then i will proceed with merging
+2. we can use tools like Visual studio code, which can resolve merge conflicts.
+
+---------------------------------------------------------------------
+.gitignore
+-------------
+.gitignore file is used  to ignore the files from tracking in git
+
+add file names in which needs to be ignored in to  .gitignore file
+
+$ cat .gitignore
+*.log
+testfile
+
+-----------------------------------------------------------------------
+Git Hooks:
+==========
+
+git hooks will impose some policies before & after commits.
+
+Pre commit hooks
+  git will execute these files prior to committing
+
+Post commit hooks
+  git will execute these files after committing
+ is done
+
+path of hook files: .git/hooks/
+-------------------------------------------------------------------------
