@@ -1,0 +1,74 @@
+K8s-Cluster-Installation-Steps
+==============================================
+
+
+Note:
+Install mobaxterm installer edition https://mobaxterm.mobatek.net/download-home-edition.html 
+
+to connect to ec2 instances from mobaxterm:
+
+open mobaxterm --> session --> ssh --> in Remote host <paste-Public ip> --> select  specify username & provide username
+under advanced SSH settings --> select use private key --> select pem file --> ok
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+launch 3 instances with 
+------------------------
+- ubuntu 22.04 as image
+- type of instance: 
+  -- For Master use  ec2 instance of - t2.medium 
+  -- For two workers ec2 instance of - t2.micro
+- SECURITY GROUP -inbound rules - all traffic & anywhere
+
+
+
+Step1:
+# Update the OS on all nodes
+    sudo apt-get update
+
+# Run only on master node
+    sudo hostnamectl set-hostname control-plane
+
+#Run  only on worker node - 1 
+    sudo hostnamectl set-hostname worker-node-1 
+
+#Run  only on worker node - 2
+    sudo hostnamectl set-hostname worker-node-2 
+
+Step2: Run the common.sh script on both master and worker nodes
+	   chmod 777 k8s-common.sh
+	   ./k8s-common.sh
+
+Step3: Run Only on K8s-Master Node
+       sudo kubeadm init --ignore-preflight-errors=FileContent--proc-sys-net-bridge-bridge-nf-call-iptables
+
+       mkdir -p $HOME/.kube
+       sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+       sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+       kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml
+
+       kubectl get nodes
+
+
+Step4: Run Only on worker node - 1 & worker node - 2
+ 
+      Join both the worker nodes to the cluster, command is already there in output of master node, just copy paste on both the worker nodes,
+      Note: run kubeadm join with sudo
+      kubeadm join 172.31.46.231:6443 --token 9bip0h.6vkeqqddhy122zkb \
+
+
+
+k8s cluster setup verification:
+-------------------------------
+after you setup cluster, run below command in control plane /  master node --> kubectl get nodes
+
+you should see 3 nodes of cluster like below
+
+ubuntu@control-plane:~$ kubectl get nodes
+NAME            STATUS     ROLES           AGE     VERSION
+control-plane   Ready      control-plane   6m11s   v1.29.15
+worker-node-1   Ready      <none>          30s     v1.29.15
+worker-node-2   NotReady   <none>          22s     v1.29.15
+
