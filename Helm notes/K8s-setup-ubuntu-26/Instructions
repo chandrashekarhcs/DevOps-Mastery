@@ -1,0 +1,20 @@
+On the control-plane:
+1. bashsudo bash k8s-master.sh
+2. At the end it prints and saves the join command to /tmp/k8s-worker-join.sh. 
+3. Copy that join command.
+
+=====================================
+On each worker node:
+1. bashsudo bash k8s-worker.sh --join-command " sudo kubeadm join 172.31.37.15:6443 --token xxx --discovery-token-ca-cert-hash sha256:xxx"
+
+Note: the join sommand has to be in commas
+
+
+So:
+
+1. Run k8s-master.sh on the control-plane first
+2. Copy the join command it prints at the end
+3. Run k8s-worker.sh --join-command "..." on worker-1
+4. Run k8s-worker.sh --join-command "..." on worker-2
+
+The xxx in my example is a placeholder — replace it with the actual token and hash that k8s-master.sh prints at the end. Don't use the old token since you reset everything.
