@@ -1,0 +1,321 @@
+Introduction to Helm
+
+   Helm is a package manager and templating engine for kubernetes that simplifies deployment and management of application.
+   Helm chart is a collection of YAML files that describe a kubernetes appplication. These files are organized into a directory structure with a specfic format.
+-------------------------------------------------------
+1.Understanding what is Helm and why we use it?
+   -Helm is used to package,configure and deploy kubernetes application easily.
+   -It provides an easy to use and automated way to deploying kubernetes apps and containers.
+   -It automates the respective and time-consuming tasks of the deployment, thereby simplifying the overall process.
+ 
+-------------------------------------------------------
+2.Basics of charts and its Anatomy?
+  -A chart contains various files and directories required to deploy a kubernetes application.
+  -It has a specific structure including 'Chart.yaml', 'templates/' directory,'values.yaml' and 'README.md'
+  -'Chart.yaml' contains metadata for your chart such as version, name   etc.
+  -The 'templates/' directory contains the kubernetes YAML files that define the kubernetes objects.
+  -'values.yaml' contains the default values of your chart that can be overridden during installation.
+
+
+my-chart/
+  ├── charts/
+  ├── templates/ #templates directory contains  the k8s manifest files(ex:deployment.yaml, service.yaml, configmap.yaml, secret.yaml, ingress.yaml)
+  ├── Chart.yaml
+  ├── values.yaml
+  └── README.md
+
+Understand basic Helm chart structure:
+
+A Helm chart is a collection of YAML templates, which are used to define Kubernetes objects such as deployments, services, and other components. The chart also includes metadata information, such as the chart name, version, and dependencies. The chart structure includes the following files:
+
+- `Chart.yaml`: This file contains metadata information about the chart, such as the name, version, and dependencies.
+- `values.yaml`: This file contains default values for the chart variables.
+- `templates/`: This directory contains YAML files that define the Kubernetes objects being deployed, such as deployments, services, and pods.
+- `README.md`: This file provides instructions and information about the chart.
+
+-------------------------------------------------------
+3.Developing the charts directory and making it available.
+  
+  Once you developed the templates, manifests and values, you can package them up into a chart that can be distributed and installed.
+  
+  $ helm package mychart
+  
+  This is the command packages the chart into a '.tgz' file that can be shared with your team or uploaded to repository like Helm chart museum or Artifactory.
+  
+---------------------------------------------------------
+
+
+=================================Install Helm============================================================
+Steps to install helm
+Step 1: Download the latest helm 3 installation script.
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+
+Step 2: Add execute permissions to the downloaded script.
+chmod +x get_helm.sh
+
+Step 3: Execute the installation script. This script will automatically find the right binary for your system.
+./get_helm.sh
+
+Step 4: Validate helm installation by executing the helm command.
+helm
+
+=====================================================================================
+Create the helmchart
+$ helm create webapp1
+
+Install your package
+
+helm install <release-name> webapp1/
+
+ex: helm install mywebapp-release webapp1/
+
+helm list
+
+ex:
+ubuntu@k8smaster:~$ helm list
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+devops-release  default         2               2023-07-25 03:43:39.122886931 +0000 UTC deployed        acecloudacademy-app-0.1.0  1.16.0
+
+
+=============================================================================
+
+Webapp deployment
+*****************
+Original deployment file:
+*****************************
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  namespace: default
+  labels:
+    app: mywebapp
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: mywebapp
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: mywebapp
+        tier: frontend
+    spec: # Pod spec
+      containers:
+      - name: mycontainer
+        image: devopsjourney1/mywebapp:latest
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: myconfigmapv1.0
+        resources:
+          requests:
+            memory: "16Mi" 
+            cpu: "50m"    # 500milliCPUs (1/2 CPU)
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+
+Customized deployment file.
+**************************
+deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  namespace: default
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+        tier: frontend
+    spec: # Pod spec
+      containers:
+      - name: mycontainer
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: myconfigmapv1.0
+        resources:
+          requests:
+            memory: "16Mi" 
+            cpu: "50m"    # 500milliCPUs (1/2 CPU)
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+			
+			
+
+----------------------------------------------
+devopsjourney1/mywebapp:latest
+{{ .Values.image.repository }}:{{ .Values.image.tag }}
+
+EX:
+image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+------------------------------------------------------
+
+Service.yaml
+*************
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mywebapp
+  namespace: default
+  labels:
+    app: mywebapp
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: flask
+  selector:
+    app: mywebapp
+    tier: frontend
+  type: NodePort
+*****************************
+customized service.yaml 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.appName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: flask
+  selector:
+    app: {{ .Values.appName }}
+    tier: frontend
+  type: NodePort
+ ---------------------------------------------------
+ 
+ configmap.yaml
+*************
+
+kind: ConfigMap 
+apiVersion: v1 
+metadata:
+  name: myconfigmapv1.0
+  namespace: default
+data:
+  BG_COLOR: '#12181b'
+  FONT_COLOR: '#FFFFFF'
+  CUSTOM_HEADER: 'Customized with a configmap!'
+  
+  
+Customized config.yaml
+************************
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.configmap.name }}
+  namespace: {{ .Values.namespace }}
+data:
+  BG_COLOR: '#12181b'
+  FONT_COLOR: '#FFFFFF'
+  CUSTOM_HEADER: {{ .Values.configmap.data.CUSTOM_HEADER }}
+--------------------------------------------------------------------
+=================================================
+
+values.yaml  (content)
+********************
+appName: mywebapp
+replicaCount: 2
+
+image:
+  repository: devopsjourney1/mywebapp
+  tag: latest
+
+
+
+appName: mywebapp
+replicaCount: 2
+
+image:
+  repository: devopsjourney1/mywebapp
+  tag: latest
+
+========================
+ values.yaml (( use post updating the configmap))
+ *************
+appName: mywebapp
+
+
+namespace: default
+
+configmap:
+  name: myconfigmapv1.0
+  data:
+    CUSTOM_HEADER: 'This app was deployed with helm!'
+
+image:
+  name: devopsjourney1/mywebapp
+  tag: latest
+----------------------------------------------------
+
+-------------------------------------------------
+declare variable to customize your app
+
+deployment, service
+below is the sample variable
+{{ .Values.appName }}
+
+ubuntu@k8smaster:~/webapp1-app$ cat values.yaml
+appName: test-app
+
+
+Command to apply changes/ update changes
+
+helm upgrade mywebapp-release  webapp1/ --values webapp1/values.yaml
+helm upgrade mywebapp-release webapp1/ --values webapp11/values.yaml
+
+helm upgrade eleven evelendevops/ --values evelendevops/values.yaml
+==========================================================================================================================
+5. Validate the chart:
+
+It is important to test and validate your chart before distributing it. You can use the `helm lint` command to validate the quality of the chart. 
+
+
+$ helm lint mychart/
+
+------------------------------------------------------------------------------
+6. Package the chart:
+
+Once you have created the chart and validated it, you can package it into a chart archive file (chartname-version.tgz) using the `helm package` command.
+
+
+$ helm package mychart/
+-----------------------------------------------------------------------------
+7. Rollback chart releases:
+
+Rolling back a failed deployment is an important aspect of Helm chart versioning. With Helm, you can easily rollback to a previous release by using the `rollback` command.
+
+For example, if you have deployed version 1.2.3 of a chart, and then deploy version 1.2.4, but the deployment fails. You can revert to the previous version by running the following command:
+
+$ helm rollback <release name> <Revision number>
+$  helm rollback my-test 2
+
+helm rollback mywebapp-release 3
+
+
+
+=============================================================================
+

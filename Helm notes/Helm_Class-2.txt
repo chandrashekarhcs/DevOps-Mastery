@@ -1,0 +1,91 @@
+1.How to use values.yaml based on environment?
+  
+  To use values.yaml based on env, we need to create separate values files for each env (ex: values-dev.yaml, values-prod.yaml) containing env specific configurations and then pass the appropriate values file during deployment using Helm.
+--------------------------------------------------------------------------------------------------------------------
+
+Create dev/prod namespaces
+***************************
+kubectl create namespace dev
+kubectl create namespace prod
+
+
+values-dev.yaml
+*****************
+namespace: dev
+
+configmap:
+  data:
+    CUSTOM_HEADER: 'This is on the DEV environment!'
+	
+
+values-prod.yaml
+*******************
+namespace: prod
+
+configmap:
+  data:
+    CUSTOM_HEADER: 'This is on the PROD environment!'
+
+
+helm install <releasename> <chatname>/ --values chatname/values.yaml -f chatname/values-dev.yaml -n dev
+
+Sample:
+******
+helm install release1 webapp1/ --values webapp1/values.yaml -f webapp1/values-dev.yaml -n dev
+
+helm install mywebapp-release-prod webapp1/ --values webapp1/values.yaml -f webapp1/values-prod.yaml -n prod
+
+helm ls --all-namespaces
+
+if values are not updated use below command to restart the deployment.
+
+kubectl rollout restart deployment mydeployment -n dev
+
+NOTE:
+*****
+Install the first one
+*********************
+helm install mywebapp-release webapp1/ --values webapp1/values.yaml
+
+Upgrade after templating
+************************
+helm upgrade mywebapp-release webapp1/ --values mywebapp/values.yaml
+
+============================================================
+
+apiVersion: apps/v1 
+kind: Deployment  
+metadata:  
+  name: zomato-deployment 
+  labels: 
+    type: food-delivery-app 
+spec: 
+  replicas: 2 
+  selector: 
+    matchLabels: 
+      type: food-delivery-app 
+  template: 
+    metadata: 
+      name: zomato-pod 
+      labels:  
+        type: food-delivery-app 
+    spec: 
+      containers: 
+      - name: my-zomato-container 
+        image: acecloudacademy/zomato-clone-image:v1 
+        ports: 
+        - containerPort: 3000
+		
+		
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: zomato-service 
+spec: 
+  type: NodePort 
+  selector: 
+    type: food-delivery-app  
+  ports: 
+  - port: 3000       
+    targetPort: 3000  
+    nodePort: 30002 

@@ -1,0 +1,136 @@
+**********************************************
+Steps to Integrate Alertmanager with PagerDuty
+**********************************************
+1. Create a PagerDuty Service
+
+Login to PagerDuty.
+
+Go to Services → Service Directory → + New Service.
+
+Fill in service details (name, escalation policy, etc.).
+
+For Integration, select Prometheus (or Events API v2 if not listed).
+
+Copy the Integration Key (this is required in Alertmanager).
+
+43e5437daba2460ec0ec7521fbe91cb8
+
+2. Configure Alertmanager
+=========================
+ls -lrt  /opt/alertmanager
+total 47792
+-rwxr-xr-x 1 root       root       27074026 Jun  2  2021 alertmanager
+-rwxr-xr-x 1 root       root       21839682 Jun  2  2021 amtool
+-rw-r--r-- 1 root       root            348 Jun  2  2021 alertmanager.yml
+-rw-r--r-- 1 root       root            457 Jun  2  2021 NOTICE
+-rw-r--r-- 1 root       root          11357 Jun  2  2021 LICENSE
+drwxr-xr-x 2 prometheus prometheus     4096 Aug 28 00:40 data
+
+
+
+Edit your alertmanager.yml to include a PagerDuty receiver. 
+
+sudo vi alertmanager.yml
+
+Example:
+
+		
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: pagerduty
+
+receivers:
+  - name: pagerduty
+    pagerduty_configs:
+      - routing_key: "<YOUR-INTEGRATION-KEY>"
+
+
+
+
+Replace <YOUR-INTEGRATION-KEY> with the one you copied from PagerDuty.
+
+Integration Key:
+709b81982cd4450cc07ded0c818ed905
+
+- routing_key: "709b81982cd4450cc07ded0c818ed905"
+
+Sample
+
+sudo tee alertmanager.yml >/dev/null <<'EOF'
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: pagerduty
+  group_by:
+    - alertname
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+
+receivers:
+  - name: pagerduty
+    pagerduty_configs:
+      - routing_key: "43e5437daba2460ec0ec7521fbe91cb8"
+EOF
+
+3. Restart Alertmanager
+=======================
+sudo systemctl daemon-reload
+sudo systemctl restart alertmanager
+
+4. Test the Integration
+=======================
+Run a test alert by creating a simple rule in Prometheus (rules.yml):
+
+groups:
+  - name: test_rules
+    rules:
+      - alert: AlwaysFiring
+        expr: vector(1)
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Test alert to PagerDuty"
+
+
+Reload Prometheus, wait for 1 minute → you should see a PagerDuty incident created.
+sudo systemctl restart prometheus.service
+
+5. Verify
+=========
+In Prometheus: check http://<prometheus-ip>:9090/alerts → alert firing.
+
+In Alertmanager: check http://<alertmanager-ip>:9093 → alert forwarded.
+
+In PagerDuty: check Incidents tab → new incident created.
+
+Summary:
+========
+Create PagerDuty service → copy integration key.
+
+Add pagerduty_configs in alertmanager.yml.
+
+Restart Alertmanager.
+
+Test with a sample rule.
+
+
+========================
+Test if Alertmanager can reach PagerDuty
+****************************************
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"routing_key":"<YOUR-INTEGRATION-KEY>","event_action":"trigger","payload":{"summary":"Test event from curl","source":"alertmanager","severity":"critical"}}' \
+  https://events.pagerduty.com/v2/enqueue
+
+
+If you see {"status":"success"} → PagerDuty is receiving events.
+
+If you get an error (403, 400, etc.) → wrong key or network issue.
+
+
+
+
